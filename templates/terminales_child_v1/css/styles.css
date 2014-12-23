@@ -1,0 +1,259 @@
+body{
+    background-image: url("../../../images/body_child_shadow.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+    font-family: Arial;
+    font-size: 12px;
+    margin:0;
+    padding:0;
+    font-family: Comic Sans, Comic Sans MS, cursive;
+}
+#tmpl-child-wrapper{
+    margin-left: auto;
+    margin-right: auto;
+    width: 1000px;
+    height: 630px;
+}
+#rail div {
+    margin-left: 0px;
+}
+#container-slider{
+    width: 650px;
+    height: 500px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+}
+#container-bck{
+    width: 2745px;
+    height: 410px;
+    margin-left: 120px;
+    background-image: url("../../../images/container-bck.jpg");
+}
+#metro-layer{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    z-index: 2;
+    background-image: url("../../../images/metro-layer.png");
+}
+#bus-layer{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    z-index: 2;
+    background-image: url("../../../images/bus-layer.png");
+}
+#pie-layer{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    z-index: 2;
+    background-image: url("../../../images/pie-layer.png");
+}
+#taxi-layer{
+    width: 1000px;
+    height: 500px;
+    position: absolute;
+    z-index: 2;
+    background-image: url("../../../images/taxi-layer.png");
+}
+#road{
+    width: 1000px;
+    height: 130px;
+    background-image: url("../../../images/road-bck.jpg");
+}
+#select-menu{
+    width: 150px;
+    height: 450px;
+    float:left;
+    background-image: url("../../../images/select-menu.png");
+}
+#left{
+    width: 50px;
+    height: 450px;
+    float:left;
+    background-image: url("../../../images/left.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#right{
+    width: 50px;
+    height: 450px;
+    float:left;
+    background-image: url("../../../images/right.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#left_{
+    width: 50px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/left.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#right_{
+    width: 50px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/right.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+#rail{
+    width: 900px;
+    height: 130px;
+    float:left;
+}
+#metro{
+    width: 80px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/metro.png");
+}
+#bus{
+    width: 80px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/bus.png");
+}
+#pie{
+    width: 80px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/pie.png");
+}
+#taxi{
+    width: 80px;
+    height: 130px;
+    float:left;
+    background-image: url("../../../images/taxi.png");
+}
+#message-container{
+    width: 358px;
+    height: 333px;
+    padding-top: 17px;
+    padding-left: 18px;
+    float:left;
+    background-image: url("../../../images/message-container.png");
+}
+#message-metro{
+    width: 206px;
+    height: 310px;
+    background-image: url("../../../images/message-metro.png");
+}
+#message-pie{
+    width: 206px;
+    height: 310px;
+    background-image: url("../../../images/message-pie.png");
+}
+#message-bus{
+    width: 206px;
+    height: 310px;
+    background-image: url("../../../images/message-bus.png");
+}
+#message-taxi{
+    width: 206px;
+    height: 310px;
+    background-image: url("../../../images/message-taxi.png");
+}
+#menu-container{
+    width: 360px;
+    height: 100px;
+    float: left;
+}
+.menu-item{
+    width: 180px;
+    height: 100px;
+    float: left;
+}
+#games-menu{
+    width: 210px;
+    background-color: #588947;
+    position: absolute;
+    margin-left: 160px;
+    z-index: 3;
+    border: 2px #000 solid;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+a{
+    text-decoration: none;
+}
+.games-menu-item{
+    background-color: #89BC46;
+    width: 190px;
+    margin-bottom: 5px;
+    margin-left: -35px;
+    height: 20px;
+    list-style: none; 
+    padding: 0; 
+    padding-top: 5px;
+    padding-left: 10px;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+}
+#armando-container{
+    width: 500px;
+    height: 700px;
+    display: none;
+}
+#armando-form-container{
+    width: 550px;
+    height: 550px;
+    background-image: url("../../../images/armando-form-bck.png");
+    position: absolute;
+    z-index: 1;
+}
+#armando-image-container{
+    width: 200px;
+    height: 500px;
+    position: absolute;
+    background-image: url("../../../images/armando.png");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    z-index: 2;
+    left:410px;
+    top:50px;
+}
+.armando-form-header{
+    width: 610px;
+    height: 30px;
+    background-image: url("../../../images/close-box.png");
+    background-repeat: no-repeat;
+    background-position: right;
+    position: absolute;
+    z-index: 2;
+}
+.armando-form-title{
+    width:100%;
+    height: 50px;
+    margin-top: 20px;
+    float:left;
+    background-image: url("../../../images/armando-form-title.png");
+    background-repeat: no-repeat;
+    background-position: top center;
+}
+.armando-message{
+    width:490px;
+    margin-left: 30px;
+    float:left;
+}
+.armando-formu{
+    width:490px;
+    margin-left: 30px;
+    float:left;
+    margin-top: 20px;
+    font-weight: bold;
+}
+.armando-formu div{
+    height: 25px;
+    margin-bottom: 1px;
+}
+.armando-formu input{
+    width: 230px;
+    border: 2px solid #000;
+}

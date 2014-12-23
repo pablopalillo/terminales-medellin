@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install PUBLIC "-//Joomla! 2.5//DTD template 1.0//EN" "http://www.joomla.org/xml/dtd/1.6/template-install.dtd">
+<extension version="2.5" type="template" client="site">
+	<name>terminales_v1</name>
+	<creationDate>January 2013</creationDate>
+	<author>Diego Calle</author>
+	<authorEmail>diego.calle@fuziona.net</authorEmail>
+	<authorUrl>http://www.fuziona.net</authorUrl>
+	<copyright>Copyright 2013</copyright>
+	<license>Copyright 2013</license>
+	<version>2.5.0</version>
+	<description></description>
+	<positions>
+		<position>tmpl-top-weather</position>
+		<position>tmpl-top-formats</position>
+		<position>tmpl-top-language</position>
+		<position>tmpl-top-search</position>
+		<position>login</position>
+		<position>header</position>
+		<position>nav-bar</position>
+		<position>img-bar</position>
+		<position>update-bar</position>
+		<position>breadcrumbs-bar</position>
+		<position>social-bar</position>
+		<position>nav-modules</position>
+		<position>services-bar</position>
+		<position>sites-bar</position>
+		<position>bottom-banner</position>
+		<position>footer</position>
+		<position>footer-bottom-left</position>
+		<position>footer-bottom-center</position>
+		<position>footer-bottom-right</position>
+		<position>rights</position>
+		<position>hidden</position>
+		<position>transporters_allies</position>
+	</positions>
+</extension>

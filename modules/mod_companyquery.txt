@@ -1,0 +1,1 @@
+SELECT * FROM a5u6m_company ORDER BY company ASC 

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>Custom Render Menu Module</name>
+	<author>Fuziona.net</author>
+	<creationDate>February 2013</creationDate>
+	<copyright>Copyright (C) All rights reserved.</copyright>
+	<license></license>
+	<authorEmail>diego.calle@fuziona.net</authorEmail>
+	<authorUrl>fuziona.net</authorUrl>
+	<version>2.5.0</version>
+	<description>Modulo para imprimir menú con imágenes</description>
+        <config>
+            <fields name="params">
+                <fieldset name="MENU_SELECT">
+                    <field name="menu" 
+                        type="sql" 
+                        default="Seleccione" 
+                        label="Seleccione el menu que desea renderizar"
+                        query="SELECT menutype AS value, menutype AS menu FROM #__menu WHERE #__menu.menutype != '' GROUP BY #__menu.menutype" />
+                </fieldset>
+            </fields>
+        </config>
+</extension>

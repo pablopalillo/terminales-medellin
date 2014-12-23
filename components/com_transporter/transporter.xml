@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+        <name>Transporter Component</name>
+        <creationDate>February 2013</creationDate>
+        <author>fuziona.net</author>
+        <authorEmail>diego.calle@fuziona.net</authorEmail>
+        <authorUrl>http://www.fuziona.net</authorUrl>
+        <copyright>Copyright</copyright>
+        <license>Copyright</license>
+        <version>1.0</version>
+        <description></description>
+</extension>

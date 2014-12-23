@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="search">
+	<name>plg_pdf</name>
+	<author>Fuziona.net</author>
+	<creationDate>February 2013</creationDate>
+	<copyright>Copyright (C) 2013.</copyright>
+	<license></license>
+	<authorEmail>diego.calle@fuziona.net</authorEmail>
+	<authorUrl>www.fuziona.net</authorUrl>
+	<version>2.5.0</version>
+	<description></description>
+</extension>

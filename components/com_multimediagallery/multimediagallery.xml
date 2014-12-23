@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+        <name>Multimediagallery Component</name>
+        <creationDate>January 2013</creationDate>
+        <author>yesid.montoya@fuziona.net</author>
+        <authorEmail>yesid.montoya@fuziona.net</authorEmail>
+        <authorUrl>http://www.fuziona.net</authorUrl>
+        <copyright>Copyright</copyright>
+        <license>Copyright</license>
+        <version>1.0</version>
+        <description>Multimediagallery Component</description>
+</extension>

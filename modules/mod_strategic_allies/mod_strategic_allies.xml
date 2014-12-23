@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>Strategic Allies Module</name>
+	<author>Fuziona.net</author>
+	<creationDate>January 2013</creationDate>
+	<copyright>Copyright (C) All rights reserved.</copyright>
+	<license></license>
+	<authorEmail>yesid.montoya@fuziona.net</authorEmail>
+	<authorUrl>fuziona.net</authorUrl>
+	<version>2.5.0</version>
+	<description>Modulo de aliados estratégicos</description>
+        <config>
+            <fields name="params">
+                <fieldset name="SELECCIONAR ALIADO">
+                    <field name="allies_type" 
+                        type="sql" 
+                        default="Seleccione" 
+                        label="Seleccione el modulo que desea publicar" 
+                        query="SELECT id AS value, name AS allies_type FROM #__allies_type" />
+                </fieldset>
+            </fields>
+        </config>
+</extension>

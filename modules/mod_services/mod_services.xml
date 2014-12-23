@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>Custom Services Module</name>
+	<author>Fuziona.net</author>
+	<creationDate>March 2013</creationDate>
+	<copyright>Copyright (C) All rights reserved.</copyright>
+	<license></license>
+	<authorEmail>diego.calle@fuziona.net</authorEmail>
+	<authorUrl>fuziona.net</authorUrl>
+	<version>2.5.0</version>
+	<description></description>
+</extension>

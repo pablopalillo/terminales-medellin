@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>De Paseo con Armando Paseo.</title>
+<link rel="stylesheet" type="text/css" href="css/escenario.css">
+<link rel="stylesheet" type="text/css" href="css/estilos.css">
+<style type="text/css">
+
+</style>
+<script>
+bus1 = new Image();
+bus1.src = "imagenes/busAzul.png";
+bus2 = new Image();
+bus2.src = "imagenes/busVerde.png";
+bus3 = new Image();
+bus3.src = "imagenes/busrojo.png";
+bus4 = new Image();
+bus4.src = "imagenes/bus.png";
+
+function allowDrop(ev)
+{
+ev.preventDefault();
+}
+
+function drag(ev)
+{
+	ev.dataTransfer.setData("Text",ev.target.id);
+}
+	
+function drop(ev)
+{
+	ev.preventDefault();
+	var data=ev.dataTransfer.getData("Text");
+	if(data == 'tortuga' || data == 'camaleon' ||  data == 'zorro')
+	{
+		$('#gInicio').css('display', 'none');
+	    $('#gPerfecto').css('display', 'none');
+		$('#gAE').css('display', 'block');
+		$('#gCarga').css('display', 'none');
+		$('#gPuesto').css('display', 'none');
+		$('#gAG').css('display', 'none');
+	}
+	else
+	{
+		if(data == 'vaca' || data == 'cerdo' )
+		{
+			$('#gInicio').css('display', 'none');
+			$('#gPerfecto').css('display', 'none');
+			$('#gAG').css('display', 'block');
+			$('#gCarga').css('display', 'none');
+			$('#gPuesto').css('display', 'none');
+			$('#gAE').css('display', 'none');
+		}
+		else
+		{
+			
+			if(ev.target.id == 'div2' || ev.target.id == 'div2a' || ev.target.id == 'div2b' || ev.target.id == 'div2c')
+			{
+				if(data == 'nina' || data == 'nina2' || data == 'nina3' || data == 'nina4' || data == 'nina5' || data == 'nina6' || data == 'nina7' || data == 'nina8' || data == 'nina9' || data == 'nina10' || data == 'nina11' || data == 'nina12' || data == 'nina13')
+					{
+						$('#gInicio').css('display', 'none');
+						$('#gPerfecto').css('display', 'none');
+						$('#gAE').css('display', 'none');
+						$('#gCarga').css('display', 'block');
+						$('#gPuesto').css('display', 'none');
+						$('#gAG').css('display', 'none');
+					}
+				else
+				{
+					
+						ev.target.appendChild(document.getElementById(data));
+						$('#gInicio').css('display', 'none');
+						$('#gPerfecto').css('display', 'block');
+						$('#gAE').css('display', 'none');
+						$('#gCarga').css('display', 'none');
+						$('#gPuesto').css('display', 'none');
+						$('#gAG').css('display', 'none');
+				}
+			}
+			else
+			{
+				if (ev.target.getElementsByTagName('img').length == 1)
+				{
+					$('#gInicio').css('display', 'none');
+					$('#gPerfecto').css('display', 'none');
+					$('#gAE').css('display', 'none');
+					$('#gCarga').css('display', 'none');
+					$('#gPuesto').css('display', 'block');
+					$('#gAG').css('display', 'none');
+				}
+				else
+				{
+					ev.target.appendChild(document.getElementById(data));
+					$('#gInicio').css('display', 'none');
+					$('#gPerfecto').css('display', 'block');
+					$('#gAE').css('display', 'none');
+					$('#gCarga').css('display', 'none');
+					$('#gPuesto').css('display', 'none');
+					$('#gAG').css('display', 'none');
+				}
+			}
+		}
+	}
+	
+
+}
+
+
+
+function cambiarDiv(number)
+{
+if(number==1)
+{
+	document.getElementById('div1').style.display ="block";
+	document.getElementById('div1a').style.display ="none";
+	document.getElementById('div1b').style.display ="none";
+}
+else
+{
+	if(number==2)
+	{
+		document.getElementById('div1a').style.display ="block";
+		document.getElementById('div1').style.display ="none";
+		document.getElementById('div1b').style.display ="none";
+	}
+	else
+	{
+		if(number==3)
+		{
+			document.getElementById('div1b').style.display ="block";
+			document.getElementById('div1a').style.display ="none";
+			document.getElementById('div1').style.display ="none";
+		}
+	}
+}
+}
+</script>
+</head>
+<body>
+
+<div id="divContenedor">
+		<ul></ul>
+		<div id="divInicio">
+			<div id="divInferior" >
+				<p>
+					<h1>De Paseo con Armando Paseo<br></h1><br>
+                    <h3>Hola, Queremos irnos de paseo!!!,<br> pero antes debemos montar en el bus las personas y cosas con las <br> que queremos viajar, arrastralas hacia el bus en el lugar que deben ir. <br> Arranquemos en este viaje. 			<br><br></h3>
+					<a href="http://www.terminalesmedellin.com" target="_blank">Terminales Medellin</a><br><br>
+					Un viaje de cosas Buenas
+				</p>
+				<input type="button" value="Jugar" id="btnJugar" >
+				
+			</div>
+            
+		</div>
+</div>
+        
+        
+<div id="juego">
+  <div id="divBus" >
+      <img id="bus" src="imagenes/bus.png" >
+    
+      <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div2a" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div2b" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div2c" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    
+      <div id="div4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div5" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div6" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+      <div id="div7" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+  </div>
+
+
+    <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <img src="imagenes/pollito.png" draggable="true" ondragstart="drag(event)" id="Gallina"  height="80"/>
+      <img src="imagenes/vaquita.png" draggable="true" ondragstart="drag(event)" id="vaca" height="80"/>
+      <img src="imagenes/3.png" draggable="true" ondragstart="drag(event)" id="nina3" height="90"/>
+      <img src="imagenes/4.png" draggable="true" ondragstart="drag(event)" id="nina4" height="90"/>
+      <img src="imagenes/5.png" draggable="true" ondragstart="drag(event)" id="nina5" height="90"/>
+      <img src="imagenes/maleta.png" draggable="true" ondragstart="drag(event)" id="maleta" height="90"/>
+    </div>
+    <div id="div1a" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <img src="imagenes/zorrito.png" draggable="true" ondragstart="drag(event)" id="zorro" height="80"/>
+      <img src="imagenes/tortuguita.png" draggable="true" ondragstart="drag(event)" id="tortuga" height="50"/>
+      <img src="imagenes/1.png" draggable="true" ondragstart="drag(event)" id="nina" height="90"/>
+      <img src="imagenes/2.png" draggable="true" ondragstart="drag(event)" id="nina2" height="90"/>
+      <img src="imagenes/10.png" draggable="true" ondragstart="drag(event)" id="nina10" height="90"/>
+      <img src="imagenes/balon.png" draggable="true" ondragstart="drag(event)" id="balon" height="90"/>
+      <img src="imagenes/encomienda.png" draggable="true" ondragstart="drag(event)" id="encomienda" height="90"/>
+    </div>
+    <div id="div1b" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <img src="imagenes/cerdito.png" draggable="true" ondragstart="drag(event)" id="cerdo" height="80"/>
+      <img src="imagenes/camaleon.png" draggable="true" ondragstart="drag(event)" id="camaleon"  height="80"/>
+      <img src="imagenes/6.png" draggable="true" ondragstart="drag(event)" id="nina6" height="90"/>
+      <img src="imagenes/7.png" draggable="true" ondragstart="drag(event)" id="nina7" height="90"/>
+      <img src="imagenes/8.png" draggable="true" ondragstart="drag(event)" id="nina8" height="90"/>
+      <img src="imagenes/maletin.png" draggable="true" ondragstart="drag(event)" id="maletin" height="90"/>
+      <img src="imagenes/12.png" draggable="true" ondragstart="drag(event)" id="nina12" height="90"/>
+      
+    </div>
+    
+    <div id="botones" >
+      <button type="button" class="button" onClick="cambiarDiv(1);">1</button>
+      <button type="button" class="button" onClick="cambiarDiv(2);">2</button>
+      <button type="button" class="button" onClick="cambiarDiv(3);">3</button>
+    </div>
+     
+    <div id="colores" >
+      <button type="button" class="button2" style="background-color:#FFFFFF" onClick="document.images['bus'].src= bus4.src;"></button>
+      <button type="button" class="button2" style="background-color:#0000FF" onClick="document.images['bus'].src= bus1.src;"></button>
+      <button type="button" class="button2" style="background-color:#00FF00" onClick="document.images['bus'].src= bus2.src;"></button>
+      <button type="button" class="button2" style="background-color:#FF0000" onClick="document.images['bus'].src= bus3.src;"></button>
+      <button type="button" class="button2" style="background-color:#006699" id="mover" >Vamonos</button>
+    </div>
+    
+    <div id="globos" >
+     <img src="imagenes/globoInicio.png" draggable="False"  id="gInicio" />
+     <img src="imagenes/globoAE.png" draggable="False"  id="gAE" style="display:none" />
+     <img src="imagenes/globoPerfecto.png" draggable="False"  id="gPerfecto" style="display:none"/>
+     <img src="imagenes/globoCarga.png" draggable="False"  id="gCarga" style="display:none"/>
+      <img src="imagenes/globoPuesto.png" draggable="False"  id="gPuesto" style="display:none"/>
+       <img src="imagenes/globoAG.png" draggable="False"  id="gAG" style="display:none"/>
+     
+    </div>
+    
+    
+    <div id="divCont">
+      <div id="divFondo">
+         <div id="divNubes"></div>
+         <div id="divLeopardo"></div>
+      </div>
+    </div>
+</div>
+
+<canvas id="myCanvas" width="100%" height="500" style="border:0px solid #000000;">
+Tu navegador no soporta canvas</canvas>
+	<script type="text/javascript" src="js/ext/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="js/animar-escenario.js"></script>
+</body>
+</html>

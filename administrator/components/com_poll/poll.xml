@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+	<name>com_poll</name>
+	<author>Fuziona.net</author>
+	<creationDate>March 2013</creationDate>
+	<copyright></copyright>
+	<license></license>
+	<authorEmail>diego.calle@fuziona.net</authorEmail>
+	<authorUrl>www.Fuziona.net</authorUrl>
+	<version>2.5.0</version>
+	<description></description>
+</extension>

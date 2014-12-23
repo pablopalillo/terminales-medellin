@@ -1,0 +1,115 @@
+
+h1{
+	color: #000;
+	text-align: center;
+	font: 18px normal Tahoma, Verdana, Arial, sans-serif;
+	padding: 15px 0 0px 0;
+	margin: 0;
+	text-transform: uppercase;
+}
+	h1 em{
+		font-size: 11px;
+		font-weight: bold;
+	}
+h2{
+	color: #fff;
+	text-align: center;
+	font: 12px normal Tahoma, Verdana, Arial, sans-serif;
+	padding: 0 0 15px 0;
+	margin: 0;
+}
+#divCont{
+	border: solid 1px #777;
+	box-shadow: 0 0 7px #000;
+	height: 400px;
+	width: 100%;
+	margin: 0 auto;
+	display:none;
+	/*
+	 * esta capa contiene todos los elementos involucrados en la animacion
+	 * normalmente no tendria sentido colocarla (porque en realidad no es necesario)
+	 * pero le agregue un efecto de sombra... si colocamos este efecto de sombra (box-shadow)
+	 * a la capa que contiene el fondo --la animacion se ve lenta--
+	 */
+}
+#divFondo{
+	height: 400px;
+	width: 100%;
+	background: url(../imagenes/fondo.jpg);
+	/*
+	 * el fondo se debe repetir.. al menos hacia la derecha, ya que es por medio de este
+	 * fondo infinito que realizamos la animacion... ahi esta el truco
+	 */
+}
+	#divNubes{
+		width: 100%;
+		height: 151px;
+		background: url(../imagenes/nubes.png);
+		/*
+		 * el fondo se debe repetir.. al menos hacia la derecha, ya que es por medio de este
+		 * fondo infinito que realizamos la animacion... ahi esta el truco
+		 */
+	}
+	#divLeopardo{
+		margin-top: 10px;
+		text-align:center;
+	}
+		#divLeopardo img{
+			display: none;
+		}
+
+.button {
+  background: #006699;
+  border: none;
+  color: #ffffff;
+  font: 13px Tahoma, Arial, sans-serif;
+  padding: 10px 15px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #333;
+  letter-spacing: 1px;
+}
+.button2 {
+  border: none;
+  color: #ffffff;
+  font: 8px Tahoma, Arial, sans-serif;
+  padding: 8px 10px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #333;
+  letter-spacing: 1px;
+}
+#botones 
+{float:right; width:20px; margin-top:240px; height:100px;  padding:0px; border:0px solid #000000; display:none}
+#colores
+{position: absolute; top:10px;left: 500px; width:200px; height:20px; margin:0px;padding:0px;border:0px solid #000000; border-radius: 5px; display:none }
+#globos
+{position: absolute; top:0px; left: 740px;  margin:0px;padding:0px;border:0px solid #000000; display:none  }
+#div1 
+{float:Right; width:200px; height:350px; margin:10px;padding:10px;border:4px solid #0000ff; display:none; border-radius: 20px;}
+#div1a 
+{float:Right; width:200px; height:350px; margin:10px;padding:10px;border:4px solid #0000ff; display:none; border-radius: 20px;}
+#div1b 
+{float:Right; width:200px; height:350px; margin:10px;padding:10px;border:4px solid #0000ff;  display:none; border-radius: 20px;}
+
+
+#divBus
+{position: absolute; top:10px; width:810px; height:400px; margin:10px;padding:0px;border:0px solid #000000; display:none;}
+#div4
+{position: absolute; top: 65px ;left: 60px; width:130px; height:80px; margin:0px;padding:10px;border:0px solid #000000; vertical-align:bottom; }
+#div5
+{position: absolute; top: 65px ;left: 210px; width:130px; height:80px; margin:0px;padding:10px;border:0px solid #000000; vertical-align:bottom;}
+#div6
+{position: absolute; top: 65px ;left: 360px; width:130px; height:80px; margin:0px;padding:10px;border:0px solid #000000; vertical-align:bottom;}
+#div7
+{position: absolute; top: 65px ;left: 510px; width:130px; height:80px; margin:0px;padding:10px;border:0px solid #000000; vertical-align:bottom;}
+#div2
+{position: absolute; top:190px;left: 70px; width:140px; height:80px; margin:0px;padding:0px;border:0px solid #000000; vertical-align:bottom; border-radius: 5px; }
+#div2a
+{position: absolute; top:190px;left: 220px; width:140px; height:80px; margin:0px;padding:0px;border:0px solid #000000; vertical-align:bottom;
+border-radius: 5px;}
+#div2b
+{position: absolute; top:190px;left: 360px; width:140px; height:80px; margin:0px;padding:0px;border:0px solid #000000; vertical-align:bottom; border-radius: 5px;}
+#div2c
+{position: absolute; top:190px;left: 500px; width:140px; height:80px; margin:0px;padding:0px;border:0px solid #000000; vertical-align:bottom; border-radius: 5px;}
+

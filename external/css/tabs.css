@@ -1,0 +1,155 @@
+/**
+ * Document   : tabs.css
+ * @subpackage	mod_social_wall
+ * @Created on : 12/02/2013, 04:26:08 PM
+ * @copyright	Copyright (C) All rights reserved.
+ * @license	All rights reserved.
+ * @author      Alexander Hinestroza Palacios <alexander.hinestroza@fuziona.net>
+ * @Description: Purpose of the stylesheet follows.
+ */
+
+#tabs {
+	font-size: 90%;
+	margin: 0px 0;
+        background: rgb(247, 247, 247);
+        border-style: solid;
+        border-color: rgb(192, 192, 192);
+        border-width: 1px;
+        height: 174px;
+        width: 245px;
+        border-radius: 5px;
+        float: left;
+        margin-right: 2px;
+}
+#tabs ul {
+	float: left;
+	/*background: rgb(247, 247, 247);*/
+	width: 100%;
+	padding-top: 0px;
+        margin-top: 0px;
+        margin-left: -39px;
+        margin-bottom: 2px;
+}
+#tabs li {
+	margin-left: 4px;
+	list-style: none;
+        border-right: 1px rgb(192, 192, 192) solid;
+}
+* html #tabs li {
+	display: inline;
+}
+#tabs li, #tabs li a {
+	float: left;
+        border-top: 1px rgb(240, 240, 240) solid;
+        height:30px;
+}
+#tabs ul li.active {
+	border-top:2px rgb(247, 247, 247) solid;
+	background: #EEEEEE;
+        height: 30px;
+}
+#tabs ul li.active a {
+	color: #EEEEEE;
+}
+.network {
+	background: rgb(255, 255, 255);
+	clear: both;
+	padding: 8px;
+        border-radius: 5px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: 120px;
+        width: 93%;
+}
+#tabs div h3 {
+	margin-bottom: 12px;
+}
+#tabs div p {
+	line-height: 100%;
+}
+#tabs ul li a {
+	text-decoration: none;
+	padding: 8px;
+	color: #000;
+	font-weight: bold;
+        height: 22px;
+        padding-bottom:0px;
+}
+.thumbs {
+	float:left;
+	border:#000 solid 1px;
+	margin-bottom:20px;
+	margin-right:20px;
+}
+
+
+#tabst {
+	font-size: 90%;
+	margin: 0px 0;
+        background: rgb(247, 247, 247);
+        border-style: solid;
+        border-color: rgb(192, 192, 192);
+        border-width: 1px;
+        height: 554px;
+        width: 900px;
+        border-radius: 5px;
+        float: left;
+        margin-right: 2px;
+}
+#tabst ul {
+	float: left;
+	/*background: rgb(247, 247, 247);*/
+	width: 100%;
+	padding-top: 0px;
+        margin-top: 0px;
+        margin-left: -39px;
+}
+#tabst li {
+	margin-left: 4px;
+	list-style: none;
+        border-right: 1px rgb(192, 192, 192) solid;
+}
+* html #tabst li {
+	display: inline;
+}
+#tabst li, #tabst li a {
+	float: left;
+        border-top: 1px rgb(240, 240, 240) solid;
+}
+#tabst ul li.active {
+	border-top:2px rgb(247, 247, 247) solid;
+	background: #EEEEEE;
+        /*height: 40px;*/
+}
+#tabst ul li.active a {
+	/*color: #EEEEEE;*/
+}
+#tabplanta1.active {
+	border-top:2px rgb(247, 247, 247) solid;
+	background: #EEEEEE;
+        height: 40px;
+}
+#tabplanta2.active {
+	border-top:2px rgb(247, 247, 247) solid;
+	background: #EEEEEE;
+        height: 40px;
+}
+#tabplanta3.active {
+	border-top:2px rgb(247, 247, 247) solid;
+	background: #EEEEEE;
+        height: 40px;
+}
+
+
+#tabst div h3 {
+	margin-bottom: 12px;
+}
+#tabst div p {
+	line-height: 100%;
+}
+#tabst ul li a {
+	text-decoration: none;
+	padding: 8px;
+	color: #000;
+	font-weight: bold;
+}

@@ -1,0 +1,79 @@
+.gallery-item{
+    margin-right: 5px;
+    width: 190px;
+    height: 133px;
+    border: solid 6px #949494;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.gallery-item-blu{
+    margin-right: 5px;
+    width: 190px;
+    height: 133px;
+    border: solid 6px #129AD6;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+.gallery-video-item{
+    margin-right: 5px;
+    width: 190px;
+    height: 133px;
+    border: solid 6px #949494;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-image: url("../../../images/gallery_video_icon.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.gallery-video-item-blu{
+    margin-right: 5px;
+    width: 190px;
+    height: 133px;
+    border: solid 6px #129AD6;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-image: url("../../../images/gallery_video_icon.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+.galery-audio-item{
+    width:190px; 
+    height:114px;
+    background-image: url("../../../images/gallery_audio_icon.png");
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+.gallery-item-title{
+    margin-right: 5px;
+    width: 170px;
+    padding: 5px;
+    height: 40px;
+    border: solid 2px #949494;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border-top: none;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    font-weight: bold;
+    background-color: #f7f7f7;
+}
+.gallery-item-title-blu{
+    margin-right: 5px;
+    width: 170px;
+    padding: 5px;
+    height: 40px;
+    border: solid 2px #129AD6;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    border-top: none;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    font-weight: bold;
+    background-color: #f7f7f7;
+}

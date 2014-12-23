@@ -1,0 +1,1 @@
+<iframe width='190' height='133' src='http://www.youtube.com/embed/<?php echo $arrData[$i]->file_alias; ?>?autoplay=0&origin=http://www.terminalesmedellin.com' frameborder='0'></iframe>
