@@ -1,296 +1,300 @@
 <?php
 
 /**
- * @version       $Id$
- * @copyright     Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
- * @license       GNU General Public License version 2 or later; see LICENSE.txt
- * @author        Guillermo Vargas (guille@vargas.co.cr)
+ * @author      Guillermo Vargas <guille@vargas.co.cr>
+ * @author      Branko Wilhelm <branko.wilhelm@gmail.com>
+ * @link        http://www.z-index.net
+ * @copyright   (c) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   (c) 2015 Branko Wilhelm. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelitem');
-jimport('joomla.database.query');
-require_once(JPATH_COMPONENT . '/helpers/xmap.php');
+use Joomla\Registry\Registry;
 
 /**
- * Xmap Component Sitemap Model
- *
- * @package        Xmap
- * @subpackage     com_xmap
- * @since          2.0
+ * Class XmapModelSitemap
  */
 class XmapModelSitemap extends JModelItem
 {
-
     /**
-     * Model context string.
-     *
-     * @var        string
+     * @var string
      */
     protected $_context = 'com_xmap.sitemap';
-    protected $_extensions = null;
 
-    static $items = array();
     /**
-     * Method to auto-populate the model state.
-     *
-     * @return     void
+     * @var null
+     */
+    protected static $items = null;
+
+    /**
+     * @throws Exception
      */
     protected function populateState()
     {
-        $app = JFactory::getApplication('site');
+        $params = JFactory::getApplication()->getParams('com_xmap');
 
-        // Load state from the request.
-        $pk = JRequest::getInt('id');
+        $pk = JFactory::getApplication()->input->getInt('id');
         $this->setState('sitemap.id', $pk);
-
-        $offset = JRequest::getInt('limitstart');
-        $this->setState('list.offset', $offset);
-
-        // Load the parameters.
-        $params = $app->getParams();
         $this->setState('params', $params);
-
-        // TODO: Tune these values based on other permissions.
-        $this->setState('filter.published', 1);
-        $this->setState('filter.access', true);
     }
 
     /**
-     * Method to get sitemap data.
-     *
-     * @param    integer    The id of the article.
-     *
-     * @return   mixed      Menu item data object on success, false on failure.
+     * @return array|mixed|object
      */
-    public function &getItem($pk = null)
+    public function getItem()
     {
-        // Initialize variables.
-        $db = $this->getDbo();
-        $pk = (!empty($pk)) ? $pk : (int) $this->getState('sitemap.id');
+        if (is_null($this->_item))
+        {
+            $id = $this->getState('sitemap.id');
+            $db = $this->getDbo();
+            $groups = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
 
-        // If not sitemap specified, select the default one
-        if (!$pk) {
-            $query = $db->getQuery(true);
-            $query->select('id')->from('#__xmap_sitemap')->where('is_default=1');
+            $query = $db->getQuery(true)
+                ->select($this->getState('item.select', 's.*'))
+                ->from('#__xmap_sitemap AS s')
+                ->where('s.published = ' . $db->quote(1))
+                ->where('s.access IN (' . $groups . ')')
+                ->where('s.id = ' . $db->quote($id));
+
             $db->setQuery($query);
-            $pk = $db->loadResult();
-        }
 
-        if ($this->_item === null) {
-            $this->_item = array();
-        }
+            try
+            {
+                $db->execute();
+            } catch (RuntimeException $e)
+            {
+                JError::raiseError(500, $e->getMessage());
+            }
 
-        if (!isset($this->_item[$pk])) {
-            try {
-                $query = $db->getQuery(true);
+            $this->_item = $db->loadObject();
 
-                $query->select($this->getState('item.select', 'a.*'));
-                $query->from('#__xmap_sitemap AS a');
-
-                $query->where('a.id = ' . (int) $pk);
-
-                // Filter by published state.
-                $published = $this->getState('filter.published');
-                if (is_numeric($published)) {
-                    $query->where('a.state = ' . (int) $published);
-                }
-
-                // Filter by access level.
-                if ($access = $this->getState('filter.access')) {
-                    $user = JFactory::getUser();
-                    $groups = implode(',', $user->getAuthorisedViewLevels());
-                    $query->where('a.access IN (' . $groups . ')');
-                }
-
-                $this->_db->setQuery($query);
-
-                $data = $this->_db->loadObject();
-
-                if ($error = $this->_db->getErrorMsg()) {
-                    throw new Exception($error);
-                }
-
-                if (empty($data)) {
-                    throw new Exception(JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
-                }
-
-                // Check for published state if filter set.
-                if (is_numeric($published) && $data->state != $published) {
-                    throw new Exception(JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
-                }
-
-                // Convert parameter fields to objects.
-                $registry = new JRegistry('_default');
-                $registry->loadString($data->attribs);
-                $data->params = clone $this->getState('params');
-                $data->params->merge($registry);
-
-                // Convert the selections field to an array.
-                $registry = new JRegistry('_default');
-                $registry->loadString($data->selections);
-                $data->selections = $registry->toArray();
-
-                // Compute access permissions.
-                if ($access) {
-                    // If the access filter has been set, we already know this user can view.
-                    $data->params->set('access-view', true);
-                } else {
-                    // If no access filter is set, the layout takes some responsibility for display of limited information.
-                    $user = &JFactory::getUser();
-                    $groups = $user->authorisedLevels();
-
-                    $data->params->set('access-view', in_array($data->access, $groups));
-                }
-                // TODO: Type 2 permission checks?
-
-                $this->_item[$pk] = $data;
-            } catch (Exception $e) {
-                $this->setError($e->getMessage());
-                $this->_item[$pk] = false;
+            if (!empty($this->_item))
+            {
+                $this->_item->params = new Registry($this->_item->params);
+                $this->_item->selections = new Registry($this->_item->selections);
+                $this->_item->selections = $this->_item->selections->toArray();
             }
         }
 
-        return $this->_item[$pk];
+        if (empty($this->_item))
+        {
+            return JError::raiseError(404, JText::_('COM_XMAP_ERROR_SITEMAP_NOT_FOUND'));
+        }
+
+        return $this->_item;
     }
 
+    /**
+     * @return array|bool
+     */
     public function getItems()
     {
-        if ($item = $this->getItem()) {
+        if ($item = $this->getItem())
+        {
             return XmapHelper::getMenuItems($item->selections);
         }
+
         return false;
     }
 
-    function getExtensions()
+    /**
+     * @return array|mixed
+     */
+    public function getExtensions()
     {
         return XmapHelper::getExtensions();
     }
 
     /**
-     * Increment the hit counter for the sitemap.
+     * @param $count
      *
-     * @param    int        Optional primary key of the sitemap to increment.
-     *
-     * @return   boolean    True if successful; false otherwise and internal error set.
+     * @return bool|mixed
+     * @throws Exception
      */
     public function hit($count)
     {
-        // Initialize variables.
-        $pk = (int) $this->getState('sitemap.id');
+        $view = JFactory::getApplication()->input->getCmdn('view');
+        $id = $this->getState('sitemap.id');
+        $now = JFactory::getDate()->toUnix();
 
-        $view = JRequest::getCmd('view', 'html');
-        if ($view != 'xml' && $view != 'html') {
+        if ($view != 'xml' && $view != 'html')
+        {
             return false;
         }
 
-        $this->_db->setQuery(
-            'UPDATE #__xmap_sitemap' .
-            ' SET views_' . $view . ' = views_' . $view . ' + 1, count_' . $view . ' = ' . $count . ', lastvisit_' . $view . ' = ' . JFactory::getDate()->toUnix() .
-            ' WHERE id = ' . (int) $pk
-        );
+        $query = $this->_db->getQuery(true)
+            ->update('#__xmap_sitemap')
+            ->set('views_' . $view . ' = views_' . $view . ' + 1')
+            ->set('count_' . $view . ' = ' . $this->_db->quote($count))
+            ->set('lastvisit_' . $view . ' = ' . $this->_db->quote($now))
+            ->where('id = ' . $this->_db->quote($id));
 
-        if (!$this->_db->query()) {
-            $this->setError($this->_db->getErrorMsg());
+        $this->_db->setQuery($query);
+
+        try
+        {
+            return $this->_db->execute();
+        } catch (RuntimeException $e)
+        {
             return false;
         }
-
-        return true;
     }
 
-    public function getSitemapItems($view=null)
+    /**
+     * @param null $view
+     *
+     * @return null
+     * @throws Exception
+     */
+    public function getSitemapItems($view = null)
     {
-        if (!isset($view)) {
-            $view = JRequest::getCmd('view');
+        if (!isset($view))
+        {
+            $view = JFactory::getApplication()->input->getCmd('view');
         }
-        $db = JFactory::getDBO();
-        $pk = (int) $this->getState('sitemap.id');
 
-        if (self::$items !== NULL && isset(self::$items[$view])) {
-            return;
+        $db = JFactory::getDbo();
+        $pk = $this->getState('sitemap.id');
+
+        if (self::$items !== null && isset(self::$items[$view]))
+        {
+            return null;
         }
-        $query = "select * from #__xmap_items where view='$view' and sitemap_id=" . $pk;
+
+        $query = $db->getQuery(true)
+            ->select('i.*')
+            ->from('#__xmap_items AS i')
+            ->where('i.view = ' . $db->quote($view))
+            ->where('i.sitemap_id = ' . $db->quote($pk));
+
         $db->setQuery($query);
+
         $rows = $db->loadObjectList();
+
         self::$items[$view] = array();
-        foreach ($rows as $row) {
+
+        foreach ($rows as $row)
+        {
             self::$items[$view][$row->itemid] = array();
             self::$items[$view][$row->itemid][$row->uid] = array();
+
             $pairs = explode(';', $row->properties);
-            foreach ($pairs as $pair) {
-                if (strpos($pair, '=') !== FALSE) {
+
+            foreach ($pairs as $pair)
+            {
+                if (strpos($pair, '=') !== false)
+                {
                     list($property, $value) = explode('=', $pair);
                     self::$items[$view][$row->itemid][$row->uid][$property] = $value;
                 }
             }
         }
+
         return self::$items;
     }
 
-    function chageItemPropery($uid, $itemid, $view, $property, $value)
+    /**
+     * @param $uid
+     * @param $itemid
+     * @param $view
+     * @param $property
+     * @param $value
+     *
+     * @return bool
+     */
+    public function chageItemPropery($uid, $itemid, $view, $property, $value)
     {
+        $db = JFactory::getDbo();
         $items = $this->getSitemapItems($view);
-        $db = JFactory::getDBO();
-        $pk = (int) $this->getState('sitemap.id');
+        $pk = $this->getState('sitemap.id');
 
-        $isNew = false;
-        if (empty($items[$view][$itemid][$uid])) {
+        if (empty($items[$view][$itemid][$uid]))
+        {
             $items[$view][$itemid][$uid] = array();
             $isNew = true;
+        } else
+        {
+            $isNew = false;
         }
+
         $items[$view][$itemid][$uid][$property] = $value;
+
         $sep = $properties = '';
-        foreach ($items[$view][$itemid][$uid] as $k => $v) {
+        foreach ($items[$view][$itemid][$uid] as $k => $v)
+        {
             $properties .= $sep . $k . '=' . $v;
             $sep = ';';
         }
-        if (!$isNew) {
-            $query = 'UPDATE #__xmap_items SET properties=\'' . $db->escape($properties) . "' where uid='" . $db->escape($uid) . "' and itemid=$itemid and view='$view' and sitemap_id=" . $pk;
-        } else {
-            $query = 'INSERT #__xmap_items (uid,itemid,view,sitemap_id,properties) values ( \'' . $db->escape($uid) . "',$itemid,'$view',$pk,'" . $db->escape($properties) . "')";
-        }
-        $db->setQuery($query);
-        //echo $db->getQuery();exit;
-        if ($db->query()) {
-            return true;
-        } else {
-            return false;
+
+        $object = new stdClass;
+        $object->uid = $uid;
+        $object->itemid = $itemid;
+        $object->view = $view;
+        $object->sitemap_id = $pk;
+        $object->properties = $properties;
+
+        if (!$isNew)
+        {
+            return $db->updateObject('#__xmap_items', $object, array('uid', 'itemid', 'view', 'sitemap_id'));
+        } else
+        {
+            return $db->insertObject('#__xmap_items', $object);
         }
     }
 
-    function toggleItem($uid, $itemid)
+    /**
+     * @param $uid
+     * @param $itemid
+     *
+     * @return int
+     */
+    public function toggleItem($uid, $itemid)
     {
-        $app = JFactory::getApplication('site');
         $sitemap = $this->getItem();
+        $items = $this->getItems();
+        $extensions = $this->getExtensions();
 
-        $displayer = new XmapDisplayer($app->getParams(), $sitemap);
+        $displayer = new XmapDisplayerHtml($sitemap, $items, $extensions);
 
         $excludedItems = $displayer->getExcludedItems();
-        if (isset($excludedItems[$itemid])) {
-            $excludedItems[$itemid] = (array) $excludedItems[$itemid];
+        if (isset($excludedItems[$itemid]))
+        {
+            $excludedItems[$itemid] = (array)$excludedItems[$itemid];
         }
-        if (!$displayer->isExcluded($itemid, $uid)) {
+        if (!$displayer->isExcluded($itemid, $uid))
+        {
             $excludedItems[$itemid][] = $uid;
             $state = 0;
-        } else {
-            if (is_array($excludedItems[$itemid]) && count($excludedItems[$itemid])) {
+        } else
+        {
+            if (is_array($excludedItems[$itemid]) && count($excludedItems[$itemid]))
+            {
+                // TODO refactor, create_function is bad
                 $excludedItems[$itemid] = array_filter($excludedItems[$itemid], create_function('$var', 'return ($var != \'' . $uid . '\');'));
-            } else {
+            } else
+            {
                 unset($excludedItems[$itemid]);
             }
             $state = 1;
         }
 
-        $registry = new JRegistry('_default');
+        $registry = new Registry;
         $registry->loadArray($excludedItems);
         $str = $registry->toString();
 
-        $db = JFactory::getDBO();
-        $query = "UPDATE #__xmap_sitemap set excluded_items='" . $db->escape($str) . "' where id=" . $sitemap->id;
+        $db = JFactory::getDbo();
+
+        $query = $db->getQuery(true)
+            ->update('#__xmap_sitemap AS s')
+            ->set('s.excluded_items = ' . $db->quote($str))
+            ->where('s.id = ' . $db->quote($sitemap->id));
+
         $db->setQuery($query);
-        $db->query();
+
+        $db->execute();
+
         return $state;
     }
-
 }

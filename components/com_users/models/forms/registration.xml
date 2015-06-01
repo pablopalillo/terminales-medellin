@@ -1,143 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-	<fieldset name="default"
-		label="COM_USERS_REGISTRATION_DEFAULT_LABEL">
+	<fieldset name="default" label="COM_USERS_REGISTRATION_DEFAULT_LABEL">
+		<field
+			name="spacer"
+			type="spacer"
+			class="text"
+			label="COM_USERS_REGISTER_REQUIRED"
+		/>
 
-		<field name="spacer" type="spacer" class="text"
-				label="COM_USERS_REGISTER_REQUIRED"/>
-                
-                <field name="group_id" type="sql"
-                        default="13"
-			label="COM_USERS_REGISTER_USER_TYPE_LABEL"
-                        query="SELECT id AS value, title AS group_id FROM #__usergroups WHERE id != 8 AND id != 9 AND id != 1 ORDER BY value DESC" 
-                        required="true" />
+		<field
+			name="name"
+			type="text"
+			description="COM_USERS_REGISTER_NAME_DESC"
+			filter="string"
+			label="COM_USERS_REGISTER_NAME_LABEL"
+			required="true"
+			size="30"
+		/>
 
-                <field name="username" type="text"
+		<field
+			name="username"
+			type="text"
 			class="validate-username"
+			description="COM_USERS_DESIRED_USERNAME"
 			filter="username"
 			label="COM_USERS_REGISTER_USERNAME_LABEL"
-			required="true"
-                        maxlength="10"
-			size="30"
-			validate="username" />
-
-		<field name="password1" type="password"
-			autocomplete="off"
-			class="validate-password"
-			field="password2"
-			filter="raw"
-			label="COM_USERS_REGISTER_PASSWORD1_LABEL"
+			message="COM_USERS_REGISTER_USERNAME_MESSAGE"
 			required="true"
 			size="30"
-                        maxlength="10"
-			validate="equals" />
+			validate="username"
+		/>
 
-		<field name="password2" type="password"
+		<field
+			name="password1" 
+			type="password"
 			autocomplete="off"
 			class="validate-password"
-			description="COM_USERS_REGISTER_PASSWORD2_DESC"
+			description="COM_USERS_DESIRED_PASSWORD"
+			field="password1"
 			filter="raw"
-			label="COM_USERS_REGISTER_PASSWORD2_LABEL"
-			message="COM_USERS_REGISTER_PASSWORD2_MESSAGE"
+			label="COM_USERS_PROFILE_PASSWORD1_LABEL"
+			size="30"
+			validate="password"
 			required="true"
-                        maxlength="10"
-			size="30" />
+		/>
 
-		<field name="email1" type="email"
-                        maxlength="100"
+		<field
+			name="password2"
+			type="password"
+			autocomplete="off"
+			class="validate-password"
+			description="COM_USERS_PROFILE_PASSWORD2_DESC"
+			field="password1"
+			filter="raw"
+			label="COM_USERS_PROFILE_PASSWORD2_LABEL"
+			message="COM_USERS_PROFILE_PASSWORD1_MESSAGE"
+			size="30"
+			validate="equals"
+			required="true"
+		/>
+
+		<field
+			name="email1"
+			type="email"
+			description="COM_USERS_REGISTER_EMAIL1_DESC"
 			field="id"
 			filter="string"
 			label="COM_USERS_REGISTER_EMAIL1_LABEL"
+			message="COM_USERS_REGISTER_EMAIL1_MESSAGE"
 			required="true"
 			size="30"
 			unique="true"
-			validate="email" />
+			validate="email"
+		/>
 
-		<field name="email2" type="email"
-                        maxlength="100"
+		<field
+			name="email2"
+			type="email"
+			description="COM_USERS_REGISTER_EMAIL2_DESC"
 			field="email1"
 			filter="string"
 			label="COM_USERS_REGISTER_EMAIL2_LABEL"
+			message="COM_USERS_REGISTER_EMAIL2_MESSAGE"
 			required="true"
 			size="30"
-			validate="equals" />
-                
-                <field name="name" type="text"
-			filter="string"
-                        maxlength="50"
-			label="COM_USERS_REGISTER_NAME_LABEL"
-			required="true"
-			size="30" />
-                
-                <field name="documenttype" type="sql" 
-                        label="COM_USERS_REGISTER_DOCUMENT_TYPE_DESC" 
-                        query="SELECT id AS value, document AS documenttype FROM #__document_type" 
-                        required="true" />
-                
-                <field name="document" type="text"
-			filter="string"
-                        maxlength="25"
-			label="COM_USERS_REGISTER_DOCUMENT_LABEL"
-			required="true"
-                        unique="true"
-			size="30" />
-                
-                <field name="phone" type="text"
-			filter="string"
-                        maxlength="13"
-			label="COM_USERS_REGISTER_PHONE_LABEL"
-			required="true"
-			size="30" />
-                
-                <field name="fax" type="text"
-			filter="string"
-                        maxlength="10"
-			label="COM_USERS_REGISTER_FAX_LABEL"
-			required="false"
-			size="30" />
-                
-                <field name="address" type="text"
-			filter="string"
-                        maxlength="50"
-			label="COM_USERS_REGISTER_ADDRESS_LABEL"
-			required="true"
-			size="30" />
-                
-                <field name="country" type="sql" 
-                        default="170"
-			label="COM_USERS_REGISTER_COUNTRY_LABEL"
-                        query="SELECT country_code AS value, country_name AS country FROM #__register_country" 
-                        required="true" />
-                
-                <field name="state" type="sql"
-                        default="5"
-			label="COM_USERS_REGISTER_STATE_LABEL"
-                        query="SELECT state_code AS value, state_name AS state FROM #__register_state" 
-			required="true" />
-                
-                <field name="city" type="sql"
-                        default="5001"
-			label="COM_USERS_REGISTER_CITY_LABEL"
-                        query="SELECT city_code AS value, city_name AS city FROM #__register_city" 
-			required="true" />
-                
-                <field name="comment" type="textarea"
-			filter="string"
-			label="COM_USERS_REGISTER_COMMENT_LABEL"
-			required="false"
-			size="30" cols="22" />
-                
-                <field name="sendEmail" type="radio" 
-                       default="1" 
-                       required="true"
-                       label="COM_USERS_REGISTER_RECIEVE_INFORMATION_LABEL" >
-                    <option value="1">COM_USERS_REGISTER_RECIEVE_INFORMATION_YES</option>
-                    <option value="0">COM_USERS_REGISTER_RECIEVE_INFORMATION_NOT</option>
-                </field>
-                
-		<field name="captcha" type="captcha"
+			validate="equals"
+		/>
+
+		<field
+			name="captcha"
+			type="captcha"
 			label="COM_USERS_CAPTCHA_LABEL"
-			validate="captcha" />
-                
+			description="COM_USERS_CAPTCHA_DESC"
+			validate="captcha"
+		/>
 	</fieldset>
 </form>

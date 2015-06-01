@@ -39,7 +39,7 @@ function setSessionStyle(strStyle){
 })}
 
 function sessionStyle(strStyle){
-    var objStyle = JSON.decode(strStyle);
+    var objStyle = JSON.parse(strStyle);
     if("undefined" != objStyle.font_size){
         switch(objStyle.font_size){
             case '1':

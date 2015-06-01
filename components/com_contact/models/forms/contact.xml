@@ -37,7 +37,7 @@
 			id="contact-message"
 			description="COM_CONTACT_CONTACT_ENTER_MESSAGE_DESC"
 			label="COM_CONTACT_CONTACT_ENTER_MESSAGE_LABEL"
-			filter="htmlsafe"
+			filter="safehtml"
 			validate="contactemailmessage"
 			required="true"
 		/>
@@ -47,7 +47,6 @@
 			description="COM_CONTACT_CONTACT_EMAIL_A_COPY_DESC"
 			label="COM_CONTACT_CONTACT_EMAIL_A_COPY_LABEL"
 			default="0"
-			value="1"
 		/>
 
 	</fieldset>

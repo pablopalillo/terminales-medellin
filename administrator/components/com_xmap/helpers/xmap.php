@@ -1,53 +1,62 @@
 <?php
+
 /**
- * @version     $Id$
- * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @author      Guillermo Vargas <guille@vargas.co.cr>
+ * @author      Branko Wilhelm <branko.wilhelm@gmail.com>
+ * @link        http://www.z-index.net
+ * @copyright   (c) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   (c) 2015 Branko Wilhelm. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
 
-
-// No direct access
 defined('_JEXEC') or die;
 
 /**
- * Xmap component helper.
- *
- * @package     Xmap
- * @subpackage  com_xmap
- * @since       2.0
+ * Class XmapHelper
  */
-class XmapHelper
+abstract class XmapHelper
 {
     /**
-     * Configure the Linkbar.
-     *
-     * @param    string  The name of the active view.
+     * @return array
      */
-    public static function addSubmenu($vName)
+    public static function getStateOptions()
     {
-        $version = new JVersion;
+        return array(
+            JHtml::_('select.option', '1', JText::_('JPUBLISHED')),
+            JHtml::_('select.option', '0', JText::_('JUNPUBLISHED')),
+            JHtml::_('select.option', '-2', JText::_('JTRASHED')),
+            JHtml::_('select.option', '*', JText::_('JALL'))
+        );
+    }
 
-        if (version_compare($version->getShortVersion(), '3.0.0', '<')) {
-            JSubMenuHelper::addEntry(
-                JText::_('Xmap_Submenu_Sitemaps'),
-                'index.php?option=com_xmap',
-                $vName == 'sitemaps'
-            );
-            JSubMenuHelper::addEntry(
-                JText::_('Xmap_Submenu_Extensions'),
-                'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
-                $vName == 'extensions');
-        } else {
-            JHtmlSidebar::addEntry(
-                JText::_('Xmap_Submenu_Sitemaps'),
-                'index.php?option=com_xmap',
-                $vName == 'sitemaps'
-            );
-            JHtmlSidebar::addEntry(
-                JText::_('Xmap_Submenu_Extensions'),
-                'index.php?option=com_plugins&view=plugins&filter_folder=xmap',
-                $vName == 'extensions');
+    /**
+     * @param int $date unix timestamp
+     *
+     * @return string
+     */
+    public static function getLastVisitDate($date)
+    {
+        $now = JFactory::getDate()->toUnix();
+
+        if (!$date)
+        {
+            $retval = JText::_('COM_XMAP_DATE_NEVER');
+        } elseif ($date > ($now - 3600))
+        { // Less than one hour
+            $retval = JText::sprintf('COM_XMAP_DATE_MINUTES_AGO', intval(($now - $date) / 60));
+        } elseif ($date > ($now - 86400))
+        { // Less than one day
+            $hours = intval(($now - $date) / 3600);
+            $retval = JText::sprintf('COM_XMAP_DATE_HOURS_MINUTES_AGO', $hours, ($now - ($hours * 3600) - $date) / 60);
+        } elseif ($date > ($now - 259200))
+        { // Less than three days
+            $days = intval(($now - $date) / 86400);
+            $retval = JText::sprintf('COM_XMAP_DATE_DAYS_HOURS_AGO', $days, intval(($now - ($days * 86400) - $date) / 3600));
+        } else
+        {
+            $retval = JFactory::getDate($date)->format(JText::_('DATE_FORMAT_LC2'));
         }
+
+        return $retval;
     }
 }

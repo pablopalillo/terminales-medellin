@@ -1,25 +1,20 @@
 <?php
+
 /**
- * @version     $Id$
- * @copyright   Copyright (C) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @author      Guillermo Vargas <guille@vargas.co.cr>
+ * @author      Branko Wilhelm <branko.wilhelm@gmail.com>
+ * @link        http://www.z-index.net
+ * @copyright   (c) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   (c) 2015 Branko Wilhelm. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
-// no direct access
-defined( '_JEXEC' ) or die( 'Restricted access' );
 
-// Include dependencies
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die;
 
-# For compatibility with older versions of Joola 2.5
-if (!class_exists('JControllerLegacy')){
-    class JControllerLegacy extends JController {
+JLoader::discover('XmapDisplayer', __DIR__ . '/displayer/');
 
-    }
-}
-
-require_once(JPATH_COMPONENT.'/displayer.php');
+JLoader::register('XmapHelper', __DIR__ . '/helpers/xmap.php');
 
 $controller = JControllerLegacy::getInstance('Xmap');
-$controller->execute(JRequest::getVar('task'));
+$controller->execute(JFactory::getApplication()->input->get('task', 'display'));
 $controller->redirect();

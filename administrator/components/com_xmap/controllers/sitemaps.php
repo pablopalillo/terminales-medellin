@@ -1,84 +1,72 @@
 <?php
+
 /**
- * @version     $Id$
- * @copyright   Copyright (C) 2007 - 2009 Joomla! Vargas. All rights reserved.
+ * @author      Guillermo Vargas <guille@vargas.co.cr>
+ * @author      Branko Wilhelm <branko.wilhelm@gmail.com>
+ * @link        http://www.z-index.net
+ * @copyright   (c) 2005 - 2009 Joomla! Vargas. All rights reserved.
+ * @copyright   (c) 2015 Branko Wilhelm. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Guillermo Vargas (guille@vargas.co.cr)
  */
 
-// no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
-
 /**
- * @package     Xmap
- * @subpackage  com_xmap
- * @since       2.0
+ * Class XmapControllerSitemaps
  */
 class XmapControllerSitemaps extends JControllerAdmin
 {
-
+    /**
+     * @var string
+     */
     protected $text_prefix = 'COM_XMAP_SITEMAPS';
 
     /**
-     * Constructor
-     */
-    public function __construct($config = array())
-    {
-        parent::__construct($config);
-
-        $this->registerTask('unpublish',    'publish');
-        $this->registerTask('trash',        'publish');
-        $this->registerTask('unfeatured',   'featured');
-    }
-
-
-    /**
-     * Method to toggle the default sitemap.
+     * @param string $name
+     * @param string $prefix
+     * @param array $config
      *
-     * @return      void
-     * @since       2.0
-     */
-    function setDefault()
-    {
-        // Check for request forgeries
-        JRequest::checkToken() or die('Invalid Token');
-
-        // Get items to publish from the request.
-        $cid = JRequest::getVar('cid', 0, '', 'array');
-        $id  = @$cid[0];
-
-        if (!$id) {
-            JError::raiseWarning(500, JText::_('Select an item to set as default'));
-        }
-        else
-        {
-            // Get the model.
-            $model = $this->getModel();
-
-            // Publish the items.
-            if (!$model->setDefault($id)) {
-                JError::raiseWarning(500, $model->getError());
-            }
-        }
-
-        $this->setRedirect('index.php?option=com_xmap&view=sitemaps');
-    }
-
-    /**
-     * Proxy for getModel.
-     *
-     * @param    string    $name    The name of the model.
-     * @param    string    $prefix    The prefix for the PHP class name.
-     *
-     * @return    JModel
-     * @since    2.0
+     * @return object
      */
     public function getModel($name = 'Sitemap', $prefix = 'XmapModel', $config = array('ignore_request' => true))
     {
-        $model = parent::getModel($name, $prefix, $config);
-
-        return $model;
+        return parent::getModel($name, $prefix, $config);
     }
+
+    /**
+     * task for plugins button, redirect to plugin manager
+     */
+    public function plugins()
+    {
+        $this->setRedirect('index.php?option=com_plugins&filter_folder=xmap');
+        $this->redirect();
+    }
+
+    /**
+     * task for ping button, ping enabled search engines with selected sitemaps
+     */
+    public function ping()
+    {
+        $ids = $this->input->get('cid', array(), 'array');
+
+        if (empty($ids))
+        {
+            JError::raiseWarning(500, JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+        } else
+        {
+            $model = $this->getModel('Sitemaps');
+
+            try
+            {
+                $model->ping($ids);
+            } catch (RuntimeException $e)
+            {
+
+            }
+        }
+
+        $this->setRedirect('index.php?option=com_xmap');
+    }
+
+
 }

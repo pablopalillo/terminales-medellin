@@ -13,7 +13,6 @@ class ComRssComponent {
         ."FROM a5u6m_content "
         ."INNER JOIN a5u6m_users ON a5u6m_users.id = a5u6m_content.created_by "
         ."INNER JOIN a5u6m_categories ON a5u6m_categories.id = a5u6m_content.catid "
-        ."WHERE a5u6m_content.mask <> 1 "
         ."ORDER BY date DESC ";
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadObjectList();

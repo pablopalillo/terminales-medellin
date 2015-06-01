@@ -13,7 +13,7 @@ class modContentHelper
 {
     public static function getContent($intId){
         if(empty($intId)){
-            return array(); 
+            return array();
         }
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT "
@@ -33,7 +33,7 @@ class modContentHelper
                 ."AND #__content.state = 1 ";
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         $arrData = $db->loadObjectList();
-        
+
         if($arrData[0]->mask == 1){
             $strSqlStatement = "SELECT "
                     ."#__content.mask, "
@@ -69,7 +69,7 @@ class modContentHelper
                 ."INNER JOIN #__categories ON #__content.catid = #__categories.id "
                 ."INNER JOIN #__users ON #__content.created_by = #__users.id "
                 ."WHERE catid = ".$arrData[0]->catid." "
-                ."AND #__content.id <> ".$intId . " AND mask <> 1 "
+                ."AND #__content.id <> ".$intId
                 ."AND #__content.state = 1 "
                 ."ORDER BY created DESC";
             $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
@@ -77,7 +77,7 @@ class modContentHelper
             return array_merge($arrData, $arrData2);
         }
     }
-    
+
     public static function getContentByCategory($intCategoryId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT "
@@ -99,7 +99,7 @@ class modContentHelper
 //        print_r(str_replace('#__', $db->getPrefix(), $strSqlStatement)); exit;
         return $db->loadObjectList();
     }
-    
+
     public static function getMedia($intId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT #__content_media.file_alias, "
@@ -118,7 +118,7 @@ class modContentHelper
 
 
     public static function getContest($intId){
-        
+
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT * FROM #__quest_contest WHERE id_content = ".$intId;
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
@@ -167,6 +167,6 @@ class modContentHelper
         }
         return True;
     }
-    
-//    
+
+//
 }

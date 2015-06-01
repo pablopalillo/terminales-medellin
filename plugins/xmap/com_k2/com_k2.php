@@ -1,343 +1,282 @@
 <?php
+
 /**
-* @author Martin Herbst - http://www.mherbst.de
-* @email webmaster@mherbst.de
-* @package Xmap
-* @license GNU/GPL
-* @description Xmap plugin for K2 component
-*
-* Changes:
-* + 0.51   2009/08/21  Do not show deleted items resp. categories
-* + 0.60   2009/08/21  New options "Show K2 Items" added
-* # 0.65   2009/09/28  Correct modification date now shown in XML sitemap
-* # 0.66   2009/10/07  Small bugfix to avoid PHP Notice:  Undefined variable
-* # 0.67   2010/01/30  Small bugfix to avoid PHP warnings in case of null returned from queries
-* + 0.80   2010/02/07  Support of new features of K2 2.2
-* + 0.81   2010/02/19  Modified date was not correct for all items
-* + 0.85   2010/04/11  New option to avoid duplicate items
-*                      Change the date format if used together with SEFServiceMap
-* # 0.86   2010/05/24  Expired items are no longer contained in the site map
-* # 0.86   2010/05/24  Expired items are no longer contained in the site map
-*                      Warnings regarding undefined properties solved
-* # 0.90   2010/08/14  User rights are now taken into account (reported by http://walplanet.com)
-* # 0.91   2010/08/21  Bugfix: wrong SQL statement created
-* # 0.92   2010/10/13  Fixed a bug if last users or last categories has no entries
-* + 0.93   2010/11/28  Add support for Google News sitemap
-* # 0.94   2011/02/13  Small bugfix to avoid PHP warning
-* # 0.95   2011/08/13  Bugfixes regarding empty categories and invalid SQL statements
-* + 1.00   2011/09/22  Support of Joomla 1.7 and K2 2.5
-* # 1.01   2011/09/27  XML sitemap did not show K2 items
-* # 1.05   2011/11/02  Fixed some problems with menu items pointing to multiple categories
-* # 1.06   2011/11/03  Fixed a bug with empty arrays
-* # 1.07   2011/11/11  Follow subcategories did not work as expected
-* # 1.2    2013/01/31  Comatiable with joomla 3.0 and k2 2.6.3 - Mohammad Hasani Eghtedar (m.h.eghtedar@gmail.com)
-*/
+ * @author     Branko Wilhelm <branko.wilhelm@gmail.com>
+ * @link       http://www.z-index.net
+ * @copyright  (c) 2013 - 2015 Branko Wilhelm
+ * @license    GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+ */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die;
 
-/** Adds support for K2  to Xmap */
 class xmap_com_k2
 {
-    static $maxAccess = 0;
-    static $suppressDups = false;
-    static $suppressSub = false;
+    /**
+     * @var array
+     */
+    protected static $layouts = array('category', 'tag', 'user');
 
-    /** Get the content tree for this kind of content */
-    static function getTree( &$xmap, &$parent, &$params )
+    /**
+     * @var bool
+     */
+    protected static $enabled = false;
+
+    public function __construct()
     {
-        $tag=null;
-        $limit=null;
-        $id = null;
-        $link_query = parse_url( $parent->link );
-        parse_str( html_entity_decode($link_query['query']), $link_vars);
-        $parm_vars = $parent->params->toArray();
+        self::$enabled = JComponentHelper::isEnabled('com_k2');
 
-        $option = xmap_com_k2::getParam($link_vars,'option',"");
-        if ($option != "com_k2")
-            return;
-
-        $view = xmap_com_k2::getParam($link_vars,'view',"");
-        $showMode = xmap_com_k2::getParam($params, 'showk2items', "always");
-
-        if ($showMode == "never" || ($showMode == "xml" && $xmap->view == "html") || ($showMode == "html" && $xmap->view == "xml"))
-            return;
-        self::$suppressDups = (xmap_com_k2::getParam($params,'suppressdups', 'yes') == "yes");
-        self::$suppressSub = (xmap_com_k2::getParam($params,'subcategories',"yes") != "yes");
-            
-        if ($view == "item")   // for Items the sitemap already contains the correct reference
-        {
-            if (!isset($xmap->IDS))
-                $xmap->IDS = "";
-            $xmap->IDS = $xmap->IDS."|".xmap_com_k2::getParam($link_vars, 'id', $id);
-            return;
-        }
-
-        if ($xmap->view == "xml")
-            self::$maxAccess = 1;   // XML sitemaps will only see content for guests
-        else
-            self::$maxAccess = implode(",", JFactory::getUser()->getAuthorisedViewLevels());
-
-        switch(xmap_com_k2::getParam($link_vars,'task',""))
-        {
-            case "user":
-                $tag = xmap_com_k2::getParam($link_vars, 'id', $id);
-                $ids = array_key_exists('userCategoriesFilter',$parm_vars) ? $parm_vars['userCategoriesFilter'] : array("");
-                $mode = "single user";
-                break;
-            case "tag":
-                $tag = xmap_com_k2::getParam($link_vars, 'tag',"");
-                $ids = array_key_exists('categoriesFilter',$parm_vars) ? $parm_vars['categoriesFilter'] : array("");
-                $mode = "tag";
-                break;
-            case "category":
-                $ids = explode("|", xmap_com_k2::getParam($link_vars, 'id',""));
-                $mode = "category";
-                break;
-            case "":
-                switch(xmap_com_k2::getParam($link_vars,'layout',""))
-                {
-                    case "category":
-                        if(array_key_exists('categories', $parm_vars)) $ids = $parm_vars["categories"];
-                        else $ids = '';
-                        $mode = "categories";
-                        break;
-                    case "latest":
-                        $limit = xmap_com_k2::getParam($parm_vars, 'latestItemsLimit', "");
-                        if (xmap_com_k2::getParam($parm_vars, 'source', "") == "0")
-                        {
-                            $ids = array_key_exists("userIDs",$parm_vars) ? $parm_vars["userIDs"] : '';
-                            $mode = "latest user";
-                        }
-                        else
-                        {
-                            $ids = array_key_exists("categoryIDs",$parm_vars) ? $parm_vars["categoryIDs"] : '';
-                            $mode = "latest category";
-                        }
-                        break;
-                    default:
-                        return;
-                }
-                break;
-            default:
-                return;
-        }
-        $priority = xmap_com_k2::getParam($params,'priority',$parent->priority);
-        $changefreq = xmap_com_k2::getParam($params,'changefreq',$parent->changefreq);
-        if ($priority == '-1')
-            $priority = $parent->priority;
-        if ($changefreq == '-1')
-            $changefreq = $parent->changefreq;
-
-        $params['priority'] = $priority;
-        $params['changefreq'] = $changefreq;
-
-        $db = JFactory::getDBO();
-        xmap_com_k2::processTree($db, $xmap, $parent, $params, $mode, $ids, $tag, $limit);
-
-        return;
+        JLoader::register('K2HelperRoute', JPATH_SITE . '/components/com_k2/helpers/route.php');
     }
 
-    static function collectByCat($db, $catid, &$allrows)
+    /**
+     * @param XmapDisplayerInterface $xmap
+     * @param stdClass $parent
+     * @param array $params
+     *
+     * @return bool
+     */
+    public static function getTree($xmap, stdClass $parent, array &$params)
     {
-        if (trim($catid) == "") // in this case something strange went wrong
-            return;
-        $query = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from #__k2_items where "
-                ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) "
-                ."and catid = ".$catid. " order by 1 desc";
-        $db->setQuery($query);
-        $rows = $db->loadObjectList();
-        if ($rows != null)
-            $allrows = array_merge($allrows, $rows);
-        $query = "select id, name, alias  from #__k2_categories where published = 1 and trash = 0 and parent = ".$catid." order by id";
-        $db->setQuery($query);
-        $rows = $db->loadObjectList();
-        if ($rows == null)
-            $rows = array();
+        $uri = new JUri($parent->link);
 
-        foreach ($rows as $row)
+        if (!self::$enabled || !in_array($uri->getVar('layout'), self::$layouts))
         {
-            xmap_com_k2::collectByCat($db, $row->id, $allrows);
+            return false;
+        }
+
+        $params['groups'] = implode(',', JFactory::getUser()->getAuthorisedViewLevels());
+
+        $params['language_filter'] = JFactory::getApplication()->getLanguageFilter();
+
+        $params['include_items'] = JArrayHelper::getValue($params, 'include_items', 1);
+        $params['include_items'] = ($params['include_items'] == 1 || ($params['include_items'] == 2 && $xmap->view == 'xml') || ($params['include_items'] == 3 && $xmap->view == 'html'));
+
+        $params['show_unauth'] = JArrayHelper::getValue($params, 'show_unauth', 0);
+        $params['show_unauth'] = ($params['show_unauth'] == 1 || ($params['show_unauth'] == 2 && $xmap->view == 'xml') || ($params['show_unauth'] == 3 && $xmap->view == 'html'));
+
+        $params['category_priority'] = JArrayHelper::getValue($params, 'category_priority', $parent->priority);
+        $params['category_priority'] = ($params['category_priority'] == -1) ? $parent->priority : $params['category_priority'];
+
+        $params['category_changefreq'] = JArrayHelper::getValue($params, 'category_changefreq', $parent->changefreq);
+        $params['category_changefreq'] = ($params['category_changefreq'] == -1) ? $parent->changefreq : $params['category_changefreq'];
+
+        $params['item_priority'] = JArrayHelper::getValue($params, 'item_priority', $parent->priority);
+        $params['item_priority'] = ($params['item_priority'] == -1) ? $parent->priority : $params['item_priority'];
+
+        $params['item_changefreq'] = JArrayHelper::getValue($params, 'item_changefreq', $parent->changefreq);
+        $params['item_changefreq'] = ($params['item_changefreq'] == -1) ? $parent->changefreq : $params['item_changefreq'];
+
+        switch ($uri->getVar('layout'))
+        {
+            case 'category':
+                $categories = JFactory::getApplication()->getMenu()->getItem($parent->id)->params->get('categories');
+                if (count($categories) == 1)
+                {
+                    return self::getItems($xmap, $parent, $params, 'category', $categories[0]);
+                } elseif (count($categories) > 1)
+                {
+                    return self::getCategoryTree($xmap, $parent, $params, 0, $categories);
+                } else
+                {
+                    return self::getCategoryTree($xmap, $parent, $params, 0);
+                }
+                break;
+
+            case 'tag':
+                return self::getItems($xmap, $parent, $params, 'tag', $uri->getVar('tag'));
+                break;
+
+            case 'user':
+                return self::getItems($xmap, $parent, $params, 'user', $uri->getVar('id'));
+                break;
         }
     }
 
-    static function processTree($db, &$xmap, &$parent, &$params, $mode, $ids, $tag, $limit)
+    /**
+     * @param XmapDisplayerInterface $xmap
+     * @param stdClass $parent
+     * @param array $params
+     * @param string $mode
+     * @param int $linkId
+     *
+     * @return bool
+     */
+    protected static function getItems($xmap, stdClass $parent, array &$params, $mode, $linkId)
     {
-        $baseQuery = "select id,title,alias,UNIX_TIMESTAMP(created) as created, UNIX_TIMESTAMP(modified) as modified, metakey from  #__k2_items where " 
-                    ."published = 1 and trash = 0 and (publish_down = \"0000-00-00\" OR publish_down > NOW()) and "
-                    ."access in (".self::$maxAccess.") and ";
-
-        switch($mode)
+        if ($mode == 'category')
         {
-            case "single user":
-                $query = $baseQuery."created_by = ".$tag." ";
-                if ($ids[0] != "")
-                    $query .= " and catid in (".implode(",", $ids).")";
-                $query .= " order by 1 DESC ";
-                $db->setQuery($query);
-                $rows = $db->loadObjectList();
+            self::getCategoryTree($xmap, $parent, $params, $linkId);
+        }
+
+        if (!$params['include_items'])
+        {
+            return false;
+        }
+
+        $db = JFactory::getDbo();
+        $now = JFactory::getDate('now', 'UTC')->toSql();
+
+        $query = $db->getQuery(true)
+            ->select(array('i.id', 'i.title', 'i.alias', 'i.catid', 'i.modified', 'i.metakey'))
+            ->from('#__k2_items AS i')
+            ->where('i.published = 1')
+            ->where('i.trash = 0')
+            ->where('(i.publish_up = ' . $db->quote($db->getNullDate()) . ' OR i.publish_up <= ' . $db->quote($now) . ')')
+            ->where('(i.publish_down = ' . $db->quote($db->getNullDate()) . ' OR i.publish_down >= ' . $db->quote($now) . ')');
+
+        if ($xmap->isNews)
+        {
+            $query->order('i.created DESC');
+        } else
+        {
+            $query->order('i.ordering');
+        }
+
+        if (!$params['show_unauth'])
+        {
+            $query->where('i.access IN(' . $params['groups'] . ')');
+        }
+
+        if ($params['language_filter'])
+        {
+            $query->where('i.language IN(' . $db->quote(JFactory::getLanguage()->getTag()) . ', ' . $db->quote('*') . ')');
+        }
+
+        switch ($mode)
+        {
+            case 'category':
+                $query->where('i.catid = ' . $db->Quote($linkId));
                 break;
-            case "tag":
-                $query = "SELECT c.id, title, alias, UNIX_TIMESTAMP(c.created) as created, UNIX_TIMESTAMP(c.modified) as modified FROM #__k2_tags a, #__k2_tags_xref b, #__k2_items c where "."c.published = 1 and c.trash = 0 and (c.publish_down = \"0000-00-00\" OR c.publish_down > NOW()) "
-                         ."and a.Name = '".$tag."' and a.id =  b.tagId and c.id = b.itemID and c.access in (".self::$maxAccess.")";
-                if ($ids[0] != "")
-                    $query .= " and c.catid in (".implode(",", $ids).")";
-                $query .= " order by 1 DESC ";
-                $db->setQuery($query);
-                $rows = $db->loadObjectList();
+
+            case 'tag':
+                $query->join('INNER', '#__k2_tags_xref AS x ON(x.itemID = i.id)');
+                $query->join('INNER', '#__k2_tags AS t ON(t.id = x.tagID)');
+                $query->where('t.name = ' . $db->Quote($linkId));
+                $query->where('t.published = 1');
                 break;
-            case "category":
-                $query = $baseQuery."catid = ".$ids[0]." order by 1 DESC ";
-                $db->setQuery($query);
-                $rows = $db->loadObjectList();
+
+            case 'user':
+                $query->where('i.created_by = ' . $db->Quote($linkId));
                 break;
-            case "categories":
-                if (!self::$suppressSub)
-                {
-                    if($ids) $query = $baseQuery."catid in (".implode(",", $ids).") order by 1 DESC ";
-                    else $query = $baseQuery."1 order by 1 DESC ";
-                    $db->setQuery($query);
-                    $rows = $db->loadObjectList ();
-                }
-                else
-                {
-                    $rows = array();
-                    if (is_array($ids))
-                    {
-                        foreach($ids as $id)
-                        {
-                            $allrows = array();
-                            xmap_com_k2::collectByCat($db, $id, $allrows);
-                            $rows = array_merge($rows, $allrows);
-                        }
-                    }
-                }
-                break;
-            case "latest user":
-                $rows = array();
-                if (is_array($ids))
-                {
-                    foreach ($ids as $id)
-                    {
-                        $query = $baseQuery."created_by = ".$id." order by 1 DESC LIMIT ".$limit;
-                        $db->setQuery($query);
-                        $res = $db->loadObjectList();
-                        if ($res != null)
-                            $rows = array_merge($rows, $res);
-                    }
-                }
-                break;
-            case "latest category":
-                $rows = array();
-                if (is_array($ids))
-                {
-                    foreach ($ids as $id)
-                    {
-                        $query = $baseQuery."catid = ".$id." order by 1 DESC LIMIT ".$limit;
-                        $db->setQuery($query);
-                        $res = $db->loadObjectList();
-                        if ($res != null)
-                            $rows = array_merge($rows, $res);
-                    }
-                }
-                break;
-            default:
-                return;
+        }
+
+        $db->setQuery($query);
+
+        try
+        {
+            $rows = $db->loadObjectList();
+
+        } catch (RuntimeException $e)
+        {
+            return false;
+        }
+
+        if (empty($rows))
+        {
+            return false;
         }
 
         $xmap->changeLevel(1);
-        $node = new stdclass ();
-        $node->id = $parent->id;
 
-        if ($rows == null)
+        foreach ($rows as $row)
         {
-            $rows = array();
-        }
-        foreach ($rows as $row )
-        {
-            if (!(self::$suppressDups && isset($xmap->IDS) && strstr($xmap->IDS, "|".$row->id)))
-                xmap_com_k2::addNode($xmap, $node, $row, false, $parent, $params);
-        }
-
-        if ($mode == "category" && !self::$suppressSub)
-        {
-            $query = "select id, name, alias  from #__k2_categories where published = 1 and trash = 0 and parent = ".$ids[0]
-                    ." and access in (".self::$maxAccess.") order by id";
-            $db->setQuery($query);
-            $rows = $db->loadObjectList();
-            if ($rows == null)
-            {
-                $rows = array();
-            }
-
-            foreach ($rows as $row)
-            {
-                if (!isset($xmap->IDS))
-                        $xmap->IDS = "";
-                if (!(self::$suppressDups && strstr($xmap->IDS, "|c".$row->id)))
-                {
-                    xmap_com_k2::addNode($xmap, $node, $row, true, $parent, $params);
-                    $newID = array();
-                    $newID[0] = $row->id;
-                    xmap_com_k2::processTree($db, $xmap, $parent, $params, $mode, $newID, "", "");
-                }
-            }
-        }
-        $xmap->changeLevel (-1);
-    }
-
-    static function addNode($xmap, $node, $row, $iscat, &$parent, &$params)
-    {
-        $sef = ($_REQUEST['option'] == "com_sefservicemap"); // verallgemeinern
-
-        if ($xmap->isNews && ($row->modified ? $row->modified : $row->created) > ($xmap->now - (2 * 86400)))
-        {
-            $node->newsItem = 1;
+            $node = new stdClass;
+            $node->id = $parent->id;
+            $node->name = $row->title;
+            $node->title = $row->title;
+            $node->modified = $row->modified;
             $node->keywords = $row->metakey;
+            $node->newsItem = 1;
+            $node->uid = $parent->uid . '_' . $row->id;
+            $node->browserNav = $parent->browserNav;
+            $node->priority = $params['item_priority'];
+            $node->changefreq = $params['item_changefreq'];
+            $node->link = K2HelperRoute::getItemRoute($row->id . ':' . $row->alias, $row->catid);
+
+            $xmap->printNode($node);
         }
-        else
-        {
-            $node->newsItem = 0;
-            $node->keywords = "";
-        }
-        if (!isset($xmap->IDS))
-            $xmap->IDS = "";
 
-        $node->browserNav = $parent->browserNav;
-        $node->pid = $row->id;
-        $node->uid = $parent->uid . 'item' . $row->id;
-        if (isset($row->modified) || isset($row->created))
-            $node->modified = (isset($row->modified) ? $row->modified : $row->created);
+        $xmap->changeLevel(-1);
 
-        if ($sef)
-            $node->modified = date('Y-m-d',$node->modified);
-
-        $node->name = ($iscat ? $row->name : $row->title);
-
-        $node->priority = $params['priority'];
-        $node->changefreq = $params['changefreq'];
-
-        if ($iscat)
-        {
-            $xmap->IDS .= "|c".$row->id;
-            $node->link = 'index.php?option=com_k2&view=itemlist&task=category&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
-            $node->expandible = true;
-        }
-        else
-        {
-            $xmap->IDS .= "|".$row->id;
-            $node->link = 'index.php?option=com_k2&view=item&id='.$row->id.':'.$row->alias.'&Itemid='.$parent->id;
-            $node->expandible = false;
-        }
-        $node->tree = array ();
-        $xmap->printNode($node);
-
+        return true;
     }
 
-    static function &getParam($arr, $name, $def)
+    /**
+     * @param XmapDisplayerInterface $xmap
+     * @param stdClass $parent
+     * @param array $params
+     * @param int $parent_id
+     * @param int[]|null $ids
+     *
+     * @return bool
+     */
+    protected static function getCategoryTree($xmap, stdClass $parent, array &$params, $parent_id, $ids = null)
     {
-        $var = JArrayHelper::getValue( $arr, $name, $def, '' );
-        return $var;
-    }
+        $db = JFactory::getDbo();
 
+        $query = $db->getQuery(true)
+            ->select(array('c.id', 'c.name', 'c.alias', 'c.parent'))
+            ->from('#__k2_categories AS c')
+            ->where('c.published = 1')
+            ->where('c.trash = 0')
+            ->order('c.ordering');
+
+        if (!empty($ids))
+        {
+            $query->where('c.id IN(' . implode(',', $db->quote($ids)) . ')');
+        } else
+        {
+            $query->where('c.parent =' . $db->quote($parent_id));
+        }
+
+        if (!$params['show_unauth'])
+        {
+            $query->where('c.access IN(' . $params['groups'] . ')');
+        }
+
+        if ($params['language_filter'])
+        {
+            $query->where('c.language IN(' . $db->quote(JFactory::getLanguage()->getTag()) . ', ' . $db->quote('*') . ')');
+        }
+
+        $db->setQuery($query);
+
+        try
+        {
+            $rows = $db->loadObjectList();
+
+        } catch (RuntimeException $e)
+        {
+            return false;
+        }
+
+        if (empty($rows))
+        {
+            return false;
+        }
+
+        $xmap->changeLevel(1);
+
+        foreach ($rows as $row)
+        {
+            $node = new stdClass;
+            $node->id = $parent->id;
+            $node->name = $row->name;
+            $node->uid = $parent->uid . '_cid_' . $row->id;
+            $node->browserNav = $parent->browserNav;
+            $node->priority = $params['category_priority'];
+            $node->changefreq = $params['category_changefreq'];
+            $node->pid = $row->parent;
+            $node->link = K2HelperRoute::getCategoryRoute($row->id . ':' . $row->alias);
+
+            if ($xmap->printNode($node) !== false)
+            {
+                self::getItems($xmap, $parent, $params, 'category', $row->id);
+            }
+        }
+
+        $xmap->changeLevel(-1);
+
+        return true;
+    }
 }
-?>

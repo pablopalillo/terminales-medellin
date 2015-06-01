@@ -17,8 +17,8 @@ class ModProjectsNewsFeaturedHelper
             ."FROM  #__content "
             ."LEFT JOIN #__content_media ON #__content_media.id_content = #__content.id "
             ."LEFT JOIN #__media_type ON #__content_media.id_type = #__media_type.id "
-            ."WHERE #__content.catid = ".$intCategoryId." AND mask <> 1 "
-            ."AND (a5u6m_media_type.type = 'Imagen' OR a5u6m_media_type.type is null) "
+            ."WHERE #__content.catid = ".$intCategoryId
+            ." AND (a5u6m_media_type.type = 'Imagen' OR a5u6m_media_type.type is null) "
             ."AND #__content.state = 1 "
             ."GROUP BY a5u6m_content.id "
             ."ORDER BY #__content.created DESC LIMIT 7";
@@ -26,21 +26,21 @@ class ModProjectsNewsFeaturedHelper
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadObjectList();
     }
-    
+
     public static function getFeaturedContent($intCategoryId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT * FROM #__menu WHERE #__menu.menutype = 'project-".$intCategoryId."' AND #__menu.published";
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadObjectList();
     }
-    
+
     public static function getNewsCategory($intItemId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT title FROM a5u6m_menu WHERE id = ".$intItemId;
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadResult();
     }
-    
+
     public static function getNewMedia($intItemId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT "
@@ -58,7 +58,7 @@ class ModProjectsNewsFeaturedHelper
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadObjectList();
     }
-    
+
     public static function getArticleContent($intItemId){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT * FROM a5u6m_content WHERE id = ".$intItemId;

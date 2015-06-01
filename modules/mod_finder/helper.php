@@ -3,8 +3,8 @@
  * @package     Joomla.Site
  * @subpackage  mod_finder
  *
- * @copyright   Copyright (C) 2005 - 2014 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE
+ * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -22,13 +22,14 @@ class ModFinderHelper
 	 * Method to get hidden input fields for a get form so that control variables
 	 * are not lost upon form submission.
 	 *
-	 * @param   string  $route  The route to the page. [optional]
+	 * @param   string   $route      The route to the page. [optional]
+	 * @param   integer  $paramItem  The menu item ID. (@since 3.1) [optional]
 	 *
 	 * @return  string  A string of hidden input form fields
 	 *
 	 * @since   2.5
 	 */
-	public static function getGetFields($route = null)
+	public static function getGetFields($route = null, $paramItem = 0)
 	{
 		// Determine if there is an item id before routing.
 		$needId = !JURI::getInstance($route)->getVar('Itemid');
@@ -56,7 +57,7 @@ class ModFinderHelper
 	/**
 	 * Get Smart Search query object.
 	 *
-	 * @param   JRegistry object containing module parameters.
+	 * @param   \Joomla\Registry\Registry  $params  Module parameters.
 	 *
 	 * @return  FinderIndexerQuery object
 	 *
@@ -84,5 +85,4 @@ class ModFinderHelper
 
 		return $query;
 	}
-
 }

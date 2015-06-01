@@ -17,14 +17,14 @@ class modHomeNewsFeaturedHelper
             ."FROM  #__content "
             ."LEFT JOIN #__content_media ON #__content_media.id_content = #__content.id "
             ."INNER JOIN #__media_type ON #__content_media.id_type = #__media_type.id "
-            ."WHERE #__content.catid = 8 AND mask <> 1 "
+            ."WHERE #__content.catid = 8 "
             ."AND #__media_type.type = 'Imagen' "
             ."GROUP BY a5u6m_content.id "
             ."ORDER BY #__content.created DESC LIMIT 7";
         $db->setQuery(str_replace('#__', $db->getPrefix(), $strSqlStatement));
         return $db->loadObjectList();
     }
-    
+
     static function getFeaturedContent(){
         $db = JFactory::getDBO();
         $strSqlStatement = "SELECT * FROM #__featured "

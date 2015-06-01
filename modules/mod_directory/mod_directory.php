@@ -9,14 +9,16 @@
 
 defined('_JEXEC') or die;
 require JModuleHelper::getLayoutPath('mod_directory', $params->get('layout', 'organi'));
-require_once dirname(__FILE__).DS.'helper.php';
-$intPR = (0 == jrequest::getInt('pr')) ? 20 : jrequest::getInt('pr');
+if(!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-$strSearchByName = jrequest::getVar('searchbyname');
-$strOrderByName = jrequest::getVar('orderbyname');
-$strOrderByArea = jrequest::getVar('orderbyarea');
-$strOrder = jrequest::getVar('order');
-$strFilterByLetter = jrequest::getVar('filterbyletter');
+require_once dirname(__FILE__).DS.'helper.php';
+$intPR = (0 == JRequest::getInt('pr')) ? 20 : JRequest::getInt('pr');
+
+$strSearchByName = JRequest::getVar('searchbyname');
+$strOrderByName = JRequest::getVar('orderbyname');
+$strOrderByArea = JRequest::getVar('orderbyarea');
+$strOrder = JRequest::getVar('order');
+$strFilterByLetter = JRequest::getVar('filterbyletter');
 
 $arrData = modDirectoryHelper::getContent($strSearchByName, $strFilterByLetter,$strOrderByName,$strOrderByArea,$strOrder, JRequest::getInt('directory', 1));
 

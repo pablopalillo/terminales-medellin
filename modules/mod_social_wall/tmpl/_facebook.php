@@ -17,7 +17,7 @@ $strGraphURL = "https://graph.facebook.com/";
     
 echo "<div id='tab-facebook' class='network'>";
 
-    $objFacebook = $objFacebookResponse->data;
+  /*  $objFacebook = $objFacebookResponse->data;
     $numTamano = sizeof($objFacebook);
     
     if ($numTamano == 0){
@@ -52,6 +52,6 @@ echo "<div id='tab-facebook' class='network'>";
                 }
             }
         }
-    }
+    }*/
 echo "</div>";
 ?>
