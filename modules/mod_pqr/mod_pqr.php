@@ -37,8 +37,9 @@ if(JRequest::getString('view', '') != 'query'){
             $strPlaca = (!empty($_POST['pqrPlaca'])) ? JRequest::getString('pqrPlaca') : "-";
             $arrayPqr = array(
                 '',
-                JRequest::getString('pqrNameLastname'),
+                date('d/m/Y'),
                 JRequest::getString('pqrId'),
+                JRequest::getString('pqrNameLastname'),
                 JRequest::getString('pqrAdress')." - ".JRequest::getString('pqrCity'),
                 JRequest::getString('pqrPhone')." - ".JRequest::getString('pqrCellphone'),
                 JRequest::getString('pqrMail'),

@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 class modPqrHelper
 {
     public static function callWs($arrayPqr){
-        $url = 'http://190.0.59.78:8091/documentws/documentos.asmx?WSDL';
+        $url = 'https://190.0.59.78:8091/documentws/documentos.asmx?wsdl';
         $login ="PQR";
         $pass ="PQR123";
         $objSoapClient = new SoapClient($url, 
@@ -34,7 +34,7 @@ class modPqrHelper
     }
     
     public static function callWs_traz($strPQRCode){
-        $url = 'http://190.0.59.78:8091/documentws/documentos.asmx?WSDL';
+        $url = 'https://190.0.59.78:8091/documentws/documentos.asmx?wsdl';
         $login ="PQR";
         $pass ="PQR123";
         $objSoapClient = new SoapClient($url, 

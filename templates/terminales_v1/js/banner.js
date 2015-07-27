@@ -29,7 +29,7 @@ function hiddenEffect(strDivId, intTotal, intOrder, boolInterval){
     }
     intOrder = parseInt(intOrder)+1;
     if(intOrder != parseInt(intTotal)){
-        $(strDivId).animate({
+        jQuery(strDivId).animate({
                 opacity: 0.0
             }, 5000, function() {
                 $(strDivId).css('display', 'none');

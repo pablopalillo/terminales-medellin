@@ -94,12 +94,15 @@ $('document').ready(
                 alert("POR FAVOR INGRESE SU RESPUESTA");
             }
         });
-        $('.menu_nav_bar .parent').mouseover(function(){
-            $(this).children().attr('class', 'showContent');
+
+        $('.menu_nav_bar .parent').mouseover(function()
+        {
+            jQuery(this).children().attr('class', 'showContent');
 //            $(this).attr('class', 'showContent');
         });
+
         $('.menu_nav_bar .parent').mouseleave(function(){
-            $('.menu_nav_bar li ul').attr('class', 'hiddenContent');
+            jQuery('.menu_nav_bar li ul').attr('class', 'hiddenContent');
         });
         $('.login-button-a').click(function(){
             $('#login-form').submit();

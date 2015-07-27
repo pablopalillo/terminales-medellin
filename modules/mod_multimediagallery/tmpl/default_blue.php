@@ -29,15 +29,18 @@ for ($x = 0; $x < $intPages; $x++) {
         ."<tr><td align='center'>";
     for ($i = $intPRInit; $i < $intPRSum; $i++) {
         if (isset($arrData[$i])) {
+
             switch ($arrData[$i]->id_type){
                 case 1:
                     echo "<div align='center' style='float:left; margin-bottom:10px;'>";
                     
                     if($strClass == 'hiddenContent'){
-                        echo "<div class='gallery-item-blu'><a size='".round((filesize(JPATH_BASE."/multimedia/".$arrData[$i]->file_alias)/1000), 0)."' description='".$arrData[$i]->description."' author='".$arrData[$i]->author."' title='".$arrData[$i]->title."' href='multimedia/".$arrData[$i]->file_alias."'><img ref=".$arrData[$i]->thumb." src='' style='width:200px;' /></a></div>";
+
+                        echo "<div class='gallery-item-blu'><a size='".round((filesize(JPATH_BASE."/terminales-medellin/multimedia/".$arrData[$i]->file_alias)/1000), 0)."' description='".$arrData[$i]->description."' author='".$arrData[$i]->author."' title='".$arrData[$i]->title."' href='multimedia/".$arrData[$i]->file_alias."'><img ref=".$arrData[$i]->thumb." src='' style='width:200px;' /></a></div>";
 //                        echo "<div class='gallery-item'><a href='multimedia/".$arrData[$i]->file_alias."'><img ref=".$arrData[$i]->thumb." src='' style='width:200px;' /></a></div>";
                         break;
                     } 
+
                     echo "<div class='gallery-item-blu'><a size='".round((filesize(JPATH_BASE."/multimedia/".$arrData[$i]->file_alias)/1000), 0)."' description='".$arrData[$i]->description."' author='".$arrData[$i]->author."' title='".$arrData[$i]->title."' href='multimedia/".$arrData[$i]->file_alias."'><img ref=".$arrData[$i]->thumb." src='multimedia/".$arrData[$i]->thumb."' style='width:190px; height:134px;' /></a></div>";
 //                    echo "<div class='gallery-item-blu'><a href='multimedia/".$arrData[$i]->file_alias."'><img ref=".$arrData[$i]->thumb." src='multimedia/".$arrData[$i]->thumb."' style='width:190px; height:134px;' /></a></div>";
                     echo "<div class='gallery-item-title-blu'>".$arrData[$i]->title."</div>";
