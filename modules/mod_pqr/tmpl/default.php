@@ -10,6 +10,8 @@
 // no direct access
 defined('_JEXEC') or die;
 JHtml::_('behavior.keepalive');
+       ini_set('allow_url_include', '1');
+
 ?>
 
 <div class="legend_pqr_" align="left"></div>

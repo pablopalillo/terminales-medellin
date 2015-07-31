@@ -9,7 +9,7 @@ class JConfig {
 	public $captcha = '0';
 	public $list_limit = '20';
 	public $access = '1';
-	public $debug = '0';
+	public $debug = '1';
 	public $debug_lang = '0';
 	public $dbtype = 'mysqli';
 	public $host = 'localhost';
@@ -53,13 +53,13 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
-	public $log_path = '/var/www/nuevott/logs';
-	public $tmp_path = '/var/www/nuevott/tmp';
-	public $lifetime = '15';
+	public $log_path = '/var/www/html/terminales-medellin/logs';
+	public $tmp_path = '/var/www/html/terminales-medellin/tmp';
+	public $lifetime = '20';
 	public $session_handler = 'database';
 	public $MetaRights = '';
 	public $sitename_pagetitles = '0';
-	public $force_ssl = '0';
+	public $force_ssl = '1';
 	public $feed_email = 'author';
 	public $cookie_domain = '';
 	public $cookie_path = '';
