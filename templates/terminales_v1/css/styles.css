@@ -602,7 +602,7 @@ table[ref="multimedia_table"] td{
 #poll_title{
     float: left;
     width: 230px;
-    padding-top: 10px;
+    padding-top: 5px;
     color: #000;
     font-size: 12px;
     padding-left: 2px;
@@ -612,7 +612,6 @@ table[ref="multimedia_table"] td{
     color: #000;
     font-size: 12px;
     font-weight: normal;
-    margin-top: 2px;
 }
 #poll_answer_option_textarea{
     color: #000;
@@ -625,15 +624,7 @@ table[ref="multimedia_table"] td{
 #poll_answer_option_textarea textarea{
     width: 220px;
 }
-.poll_answer_submit{
-    margin-left: 20px;
-    float: left;
-}
-.poll_answer_show_results{
-    margin-left: 10px;
-    padding-top: 10px;
-    float: left;
-}
+
 .poll_answer{
     color: #000;
     font-size: 12px;
@@ -710,10 +701,38 @@ table[ref="multimedia_table"] td{
     background-repeat: no-repeat;
     background-position: center center;
 }
+
 #tmpl-services-bar{
     float: left;
+    margin-bottom: 20px;
     width: 100%;
 }
+
+#poll_option .poll_answer_show_results
+{
+    margin-left: 10px;
+    width: 120px;
+}
+
+#poll_option .poll_answer_submit #poll_submit_btn_options
+{
+    font-size: 8px;
+    height: 17px;
+    margin-left: 10px;
+}
+
+#poll_option .poll_answer_show_results
+{
+    margin-left: 10px;
+    width: 120px;
+}
+
+#poll_option .poll_answer_submit , .poll_answer_show_results
+{
+    display: inline-block;
+}
+
+
 #tmpl-sites-bar{
     float: left;
     width: 100%;
@@ -893,6 +912,16 @@ table[ref="multimedia_table"] td{
 }
 .message-message li{
     list-style-type: none;
+}
+
+.alert-message{
+    background-color: #c3d2e5; 
+    color: #0055bb; 
+    border-top: 3px solid #0055bb; 
+    border-bottom: 3px solid #0055bb; 
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 .error-message{
     background-color: #e6c0c0; 
@@ -1394,8 +1423,74 @@ table[ref="multimedia_table"] td{
     
 }
 .registration{
-    margin-top: -40px;
+
+    border: solid 1px #129AD6;
+    background-color: #F7F7F7;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    background-image: url("../../../images/blu_background.png");
+    padding-top: 20px;
+    margin: auto;
+    width: 75%;
 }
+
+
+.login
+{
+    width: 50%;
+    margin: auto;
+}
+
+/* Form */
+.registration #member-registration, #contact-form, .login
+{
+    padding: 5px;
+}
+
+.registration #member-registration fieldset, #contact-form fieldset, .login fieldset
+
+{
+    border: 3px solid #129ad6;
+    background-color: #F7F7F7;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+}
+
+
+.registration #member-registration fieldset legend, #contact-form fieldset legend, .login fieldset legend
+{
+    width: 98%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    background-image: url("../../../images/blu_bar_.png");
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+}
+
+
+.registration #member-registration .control-group .controls
+{
+    text-align: center;
+}
+
+.registration #member-registration fieldset .control-group, .login fieldset .control-group .controls
+{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+ #contact-form fieldset .control-group .control-label,  .login fieldset .control-group .control-label
+ {
+    float: left;
+    width: 100px;
+ }
+
+
 .content-wrap-blu-register{
     margin: 5px;
     padding-top: 20px;

@@ -37,7 +37,7 @@ if(JRequest::getString('view', '') != 'query'){
             $strPlaca = (!empty($_POST['pqrPlaca'])) ? JRequest::getString('pqrPlaca') : "-";
             $arrayPqr = array(
                 '',
-                date('d/m/Y'),
+                date('Y/m/d'),
                 JRequest::getString('pqrId'),
                 JRequest::getString('pqrNameLastname'),
                 JRequest::getString('pqrAdress')." - ".JRequest::getString('pqrCity'),
@@ -54,12 +54,21 @@ if(JRequest::getString('view', '') != 'query'){
 
             if(empty($objSubmitPqr->error))
             {
-                echo "<script>alert('PQR Enviada Con Exito su código es: ".$objSubmitPqr->AgregarResult."')</script>";
+               $inicioTramite = modPqrHelper::iniciarTramite($objSubmitPqr->AgregarResult ,JRequest::getString('pqrId'));
+
+               if(empty($inicioTramite->error))
+                {
+                     echo "<script>alert('PQR Enviada Con Exito su código es: ".$objSubmitPqr->AgregarResult."')</script>";
+                }
+                else
+                {
+                    echo "<script>alert('Problemas con el inicio del tramite ERROR: ".$inicioTramite->error."')</script>";
+                }
 
             }else
             {
 
-                echo "<script>alert('Su PQR no pudo ser Procesada, Por favor intente de nuevo')</script>";
+                echo "<script>alert('Su PQR no pudo ser Procesada, Por favor intente de nuevo. Error '".$objSubmitPqr->error."')</script>";
             }
 
         }
