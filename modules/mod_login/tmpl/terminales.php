@@ -65,14 +65,15 @@ JHtml::_('behavior.keepalive');
         <div style="margin-top:2px; float:left;">
         	<a href="<?php echo JRoute::_('index.php?Itemid=149'); ?>">
 				&nbsp<?php echo 'com_english'==JRequest::getVar('option') ? "Forgot your password?":"¿Olvidó su contraseña?"; ?>
-            </a> |&nbsp; 
+            </a> 
         </div>
 
-        <div style="margin-top:2px; float:left;">
-            <a href="<?php echo JRoute::_('index.php?Itemid=148'); ?>"> 
-				<?php echo 'com_english'==JRequest::getVar('option') ? "Register":"Regístrese"; ?>
+      <!--  <div style="margin-top:2px; float:left;">
+            <a href="<?php //echo JRoute::_('index.php?Itemid=148'); ?>"> 
+				<?php //echo 'com_english'==JRequest::getVar('option') ? "Register":"Regístrese"; ?>
             </a>
         </div>
+       --> 
 
 	<input type="hidden" name="option" value="com_users" />
 	<input type="hidden" name="task" value="user.login" />

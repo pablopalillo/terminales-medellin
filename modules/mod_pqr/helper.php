@@ -58,8 +58,10 @@ class modPqrHelper
     public static function iniciarTramite($radicadoProceso, $codigoUsuario)
     {
         $url = 'http://190.0.59.78:8091/documentws/documentos.asmx?wsdl';
-        $login ="PQR";
-        $pass ="PQR123";
+        $login ="ohurtado";
+        $pass ="123";
+        echo $radicadoProceso;
+        die;
 
         $arrContextOptions=array(
             "ssl"=>array(
@@ -85,12 +87,12 @@ class modPqrHelper
 
         $objSoapClient->__setLocation($url);
         return $objSoapClient->IniciarTramite(array(
-            'radicado'=>$radicadoProceso,
-            'codigoproceso'=>'353',
-            'codigousuarioinicio' => $codigoUsuario,
+            'radicado'=> $radicadoProceso,
+            'codigoproceso'=>'',
+            'codigousuarioinicio' => '',
             'descripcion' => 'Inicio del tramite ',
-            'usuario'=>$login,
-            'clave'=>$pass,
+            'usuario'=> $login,
+            'clave'=> $pass,
             'error'=>''
             )
         ); 

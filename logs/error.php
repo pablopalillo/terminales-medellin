@@ -11,3 +11,4 @@
 2014-12-16	21:20:18	INFO	127.0.0.1	Joomla FAILURE: 	Contraseña inválida
 2015-08-24T22:03:07+00:00	INFO 127.0.0.1	joomlafailure	Contraseña inválida
 2015-08-26T21:26:14+00:00	INFO 127.0.0.1	joomlafailure	Contraseña inválida
+2015-09-17T21:04:34+00:00	INFO 127.0.0.1	joomlafailure	Usuario no existe
